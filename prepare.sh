@@ -64,6 +64,7 @@ fi
 if [ $1 == *"pretrain"* ]; then
 	
 	echo "Installing pretrained model dynamicconv.glu.wmt17.zh-en"
+	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
 	wget https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz
 	mv dict.* $VATEX/vocab
