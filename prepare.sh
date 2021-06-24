@@ -22,7 +22,7 @@ if [ ! -d "${FV}/vatex" ]; then
 	#create vatex folders
 	mkdir $FV/vatex
 	mkdir $FV/vatex/scripts
-	mkdrir $FV/vatex/raw
+	mkdir $FV/vatex/raw
 	mkdir $FV/vatex/tok
 	mkdir $FV/vatex/bpe
 	mkdir $FV/vatex/vocab
@@ -30,7 +30,7 @@ fi
 VATEX=$FV/vatex
 
 #check CUDA installation/version (10.2 required)
-CV = $(nvcc --version)
+CV=$(nvcc --version)
 if [ "${CV}" != *"release 10.2"* ]; then
 	echo "Installing CUDA 10.2"
 	apt-get install cuda-10-2 &
