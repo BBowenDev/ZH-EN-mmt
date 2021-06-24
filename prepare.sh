@@ -76,6 +76,11 @@ elif [ $1 == *"new"* ]; then
 	#install subword-nmt
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
+else; then
+	echo "Usage: preprocess.sh (pretrain/new)"
+	echo "--Select pretrain to use a pretrained model"
+	echo "--Select new to create a new model"
+	exit 0
 fi
 
 echo "Installing Prerequisites"
