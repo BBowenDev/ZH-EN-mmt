@@ -1,10 +1,8 @@
 #!/bin/bash
-
 FV=$(pwd)
 
 #check positional arguments:
 #$1 <pretrain/new>: if pretrain, use pretrained zh-en dynamicconv model; elif new, create new model
-
 if [ -z $1 ]; then
 	echo "Usage: preprocess.sh (pretrain/new)"
 	echo "--Select pretrain to use a pretrained model"
@@ -55,14 +53,13 @@ if [ ! -d "${FV}/external" ]; then
 	cd $FV/external
 	git clone https://github.com/NVIDIA/apex
 	cd apex
-	python setup.py install --cuda_ext --cpp_ext --pyprof
+	python setup.py install --cuda_ext --cpp_ext
 	pip install apex &
 	wait
 fi
 
 #if the "pretrain" option is selected, then download pretrained data
 if [ $1 == *"pretrain"* ]; then
-	
 	echo "Installing pretrained model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -77,7 +74,7 @@ elif [ $1 == *"new"* ]; then
 	#install subword-nmt
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
-else; then
+else
 	echo "Usage: preprocess.sh (pretrain/new)"
 	echo "--Select pretrain to use a pretrained model"
 	echo "--Select new to create a new model"
