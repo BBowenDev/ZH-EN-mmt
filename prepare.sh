@@ -68,7 +68,7 @@ if [ $1 == *"pretrain"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
-	wget https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz
+	wget "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
 	mv dict.* $VATEX/vocab
 	mv *.code $VATEX/bpe
 	mv bpecodes $VATEX/bpe
@@ -82,9 +82,12 @@ if [ $1 == *"pretrain"* ]; then
 #if the "new" option is selected, download raw data and install relevant libraries
 elif [ $1 == *"new"* ]; then
 	echo "Installing subword-nmt"
-	#install subword-nmt
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
+	
+	echo "Installing youtube-dl"
+	cd $FV
+	git clone https://github.com/ytdl-org/youtube-dl.git
 	
 	#get raw captions
 	echo "Fetching Datasets"
