@@ -11,17 +11,17 @@ if [ -z $1 ]; then
 	exit 0
 else
 	case $1 in 
-		-h)
+		-h) #-h for help
 			echo "Usage: preprocess.sh (pretrain/new)"
 			echo "--Select pretrain to use a pretrained model"
 			echo "--Select new to create a new model"
 			exit 0
 			;;
-		-p)
+		-p) #-p to use pretrained features
 			echo "Preparing Pretrained Model"
 			FLAG="pretrain"
 			;;
-		-n)
+		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
 			FLAG="new" 
 			;;
