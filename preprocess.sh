@@ -14,12 +14,6 @@ RAW=$VT/raw
 BPE=$VT/bpe
 VOC=$VT/vocab
 
-#get raw captions
-echo "Getting raw captions"
-wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
-wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
-wait
-
 #run preprocessing script on raw captions, tokenizing and saving to new files
 echo "Tokenizing dataset"
 cd $VT/scripts
