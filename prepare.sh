@@ -24,8 +24,12 @@ if [ ! -d "${FV}/vatex" ]; then
 	mkdir $FV/vatex/tok
 	mkdir $FV/vatex/bpe
 	mkdir $FV/vatex/vocab
+	mkdir $FV/vatex/feats
 fi
+
 VATEX=$FV/vatex
+RAW=$VATEX/raw
+FEATS=$VATEX/feats
 
 #check CUDA installation/version (10.2 required)
 CV=$(nvcc --version)
@@ -35,6 +39,7 @@ if [ "${CV}" != *"release 10.2"* ]; then
 	wait
 fi
 
+#if the external intallations directory (fairseq, apex) does not exist, install both
 if [ ! -d "${FV}/external" ]; then 
 	#create missing directories
 	mkdir $FV/external
@@ -58,9 +63,9 @@ if [ ! -d "${FV}/external" ]; then
 	wait
 fi
 
-#if the "pretrain" option is selected, then download pretrained data
+#if the "pretrain" option is selected, then download pretrained data & pretrained features
 if [ $1 == *"pretrain"* ]; then
-	echo "Installing pretrained model dynamicconv.glu.wmt17.zh-en"
+	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
 	wget https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz
@@ -69,15 +74,27 @@ if [ $1 == *"pretrain"* ]; then
 	mv bpecodes $VATEX/bpe
 	mv model.pt $FV/models
 
+	echo "Fetching Pretrained Features"
+	wget "https://vatex-feats.s3.amazonaws.com/trainval.zip" -P $FEATS &
+	wget "https://vatex-feats.s3.amazonaws.com/public_test.zip" -P $FEATS &
+	wait
+
+#if the "new" option is selected, download raw data and install relevant libraries
 elif [ $1 == *"new"* ]; then
 	echo "Installing subword-nmt"
 	#install subword-nmt
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
+	
+	#get raw captions
+	echo "Fetching Datasets"
+	wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
+	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
+	wait
 fi
 
 echo "Installing Prerequisites"
-#install pip requirements
+#install pip requirements from requirements.txt
 requirements.txt | while read line; do 
 	echo "--${line}"
 	pip install $line &
