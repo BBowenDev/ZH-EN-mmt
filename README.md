@@ -16,6 +16,12 @@ cd ZH-EN-mmt
 #chmod 755 prepare.sh
 bash prepare.sh -p
 ```
+### Hyperparameters
+Each script contains a number of variables to be used for hyperparamaterization and performance improvement.
+|**Hyperparameter**|**Location**|**Default Value**|
+|----|----|----|
+||||
+
 
 ## Training a New Model
 **_NOTE_**: new model training does not currently work, but will be patched in forthcoming builds.
