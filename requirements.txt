@@ -2,3 +2,4 @@ nltk
 jieba
 sacremoses
 pytorch
+subword-nmt
