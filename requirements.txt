@@ -1,5 +1,7 @@
+fairseq
+apex
 nltk 
 jieba
 sacremoses
-pytorch
+torch
 subword-nmt
