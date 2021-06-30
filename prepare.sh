@@ -71,18 +71,18 @@ if [ ! -d "${FV}/external" ]; then
 	#install fairseq
 	echo "Installing Fairseq"
 	cd $FV/external
-	git clone https://github.com/pytorch/fairseq
-	cd fairseq
-	git submodule update --init --recursive
-	pip install fairseq &
-	wait
-	
-	#install apex
+	git clone https://github.com/pytorch/fairseq &
 	echo "Installing Apex"
-	cd $FV/external
-	git clone https://github.com/NVIDIA/apex
-	cd apex
+	git clone https://github.com/NVIDIA/apex &
+	wait
+
+	cd $FV/fairseq
+	git submodule update --init --recursive
+	
+	cd $FV/apex
 	python setup.py install --cuda_ext --cpp_ext
+	
+	pip install fairseq &
 	pip install apex &
 	wait
 fi
@@ -121,6 +121,7 @@ elif [ $1 == *"new"* ]; then
 fi
 
 echo "Installing Prerequisites"
+cd $FV
 #install pip requirements from requirements.txt
 requirements.txt | while read line; do 
 	echo "--${line}"
