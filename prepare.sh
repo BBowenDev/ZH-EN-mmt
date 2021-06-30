@@ -57,11 +57,11 @@ FEATS=$VATEX/feats
 
 #check CUDA installation/version (10.2 required)
 CV=$(nvcc --version)
-if [ "${CV}" != *"release 10.2"* ]; then
-	echo "Installing CUDA 10.2"
-	apt-get install cuda-10-2 &
-	wait
-fi
+#if [ "${CV}" != *"release 10.2"* ]; then
+#	echo "Installing CUDA 10.2"
+#	apt-get install cuda-10-2 &
+#	wait
+#fi
 
 #if the external intallations directory (fairseq, apex) does not exist, install both
 if [ ! -d "${FV}/external" ]; then 
