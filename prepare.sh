@@ -76,10 +76,10 @@ if [ ! -d "${FV}/external" ]; then
 	git clone https://github.com/NVIDIA/apex &
 	wait
 
-	cd $FV/fairseq
+	cd $FV/external/fairseq
 	git submodule update --init --recursive
 	
-	cd $FV/apex
+	cd $FV/external/apex
 	python setup.py install --cuda_ext --cpp_ext
 	
 	pip install fairseq &
