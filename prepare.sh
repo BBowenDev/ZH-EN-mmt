@@ -19,11 +19,11 @@ else
 			;;
 		-p) #-p to use pretrained features
 			echo "Preparing Pretrained Model"
-			FLAG="pretrain"
+			FLAG="p"
 			;;
 		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
-			FLAG="new" 
+			FLAG="n" 
 			;;
 		*)
 			echo "Usage: preprocess.sh (pretrain/new)"
@@ -84,7 +84,7 @@ if [ ! -d "${FV}/external" ]; then
 fi
 
 #if the "pretrain" option is selected, then download pretrained data & pretrained features
-if [ $FLAG == *"pretrain"* ]; then
+if [ $FLAG == *"p"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -100,7 +100,7 @@ if [ $FLAG == *"pretrain"* ]; then
 	wait
 
 #if the "new" option is selected, download raw data and install relevant libraries
-elif [ $FLAG == *"new"* ]; then
+elif [ $FLAG == *"n"* ]; then
 	echo "Installing subword-nmt"
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
