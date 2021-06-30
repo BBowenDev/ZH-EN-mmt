@@ -5,16 +5,18 @@ FLAG=""
 #check positional arguments:
 #$1 <pretrain/new>: if pretrain, use pretrained zh-en dynamicconv model; elif new, create new model
 if [ -z $1 ]; then
-	echo "Usage: preprocess.sh (pretrain/new)"
-	echo "--Select pretrain to use a pretrained model"
-	echo "--Select new to create a new model"
+	echo "Usage: preprocess.sh -arg"
+	echo "--Use -p to use a pretrained model"
+	echo "--Use -n to create a new model"
+	echo "--Use -h for help"
 	exit 0
 else
 	case $1 in 
 		-h) #-h for help
-			echo "Usage: preprocess.sh (pretrain/new)"
-			echo "--Select pretrain to use a pretrained model"
-			echo "--Select new to create a new model"
+			echo "Usage: preprocess.sh -arg"
+			echo "--Use -p to use a pretrained model"
+			echo "--Use -n to create a new model"
+			echo "--Use -h for help"
 			exit 0
 			;;
 		-p) #-p to use pretrained features
@@ -26,9 +28,10 @@ else
 			FLAG="n" 
 			;;
 		*)
-			echo "Usage: preprocess.sh (pretrain/new)"
-			echo "--Select pretrain to use a pretrained model"
-			echo "--Select new to create a new model"
+			echo "Usage: preprocess.sh -arg"
+			echo "--Use -p to use a pretrained model"
+			echo "--Use -n to create a new model"
+			echo "--Use -h for help"
 			exit 0
 			;;
 	esac
