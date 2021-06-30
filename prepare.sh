@@ -122,5 +122,5 @@ fi
 echo "Installing Prerequisites"
 #install pip requirements from requirements.txt
 cd $FV
-pip install -r requirements.txt --no-index --find-links &
+pip install -r requirements.txt --no-index &
 wait
