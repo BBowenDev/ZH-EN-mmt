@@ -121,9 +121,6 @@ elif [ $1 == *"new"* ]; then
 fi
 
 echo "Installing Prerequisites"
-cd $FV
 #install pip requirements from requirements.txt
-requirements.txt | while read line; do 
-	echo "--${line}"
-	pip install $line &
-done
+cd $FV
+pip install requirements.txt
