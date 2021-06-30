@@ -1,8 +1,9 @@
 #!/bin/bash
 FV=$(pwd)
+FLAG=""
 
 #check positional arguments:
-#$1 <pretrain/new>: if pretrain, use pretrained zh-en dynamicconv model; elif new, create new model
+#$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
 if [ -z $1 ]; then
 	echo "Usage: preprocess.sh -arg"
 	echo "--Use -p to use a pretrained model"
@@ -20,9 +21,11 @@ else
 			;;
 		-p) #-p to use pretrained features
 			echo "Preparing Pretrained Model"
+			FLAG="pretrain"
 			;;
 		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
+			FLAG="new"
 			;;
 		*)
 			echo "Usage: preprocess.sh -arg"
@@ -56,7 +59,7 @@ RAW=$VATEX/raw
 FEATS=$VATEX/feats
 
 #check CUDA installation/version (10.2 required)
-CV=$(nvcc --version)
+#CV=$(nvcc --version)
 #if [ "${CV}" != *"release 10.2"* ]; then
 #	echo "Installing CUDA 10.2"
 #	apt-get install cuda-10-2 &
@@ -84,7 +87,7 @@ if [ ! -d "${FV}/external" ]; then
 fi
 
 #if the "pretrain" option is selected, then download pretrained data & pretrained features
-if [ $1 == *"-p"* ]; then
+if [ "${FLAG}" == *"pretrain"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -100,14 +103,16 @@ if [ $1 == *"-p"* ]; then
 	wait
 
 #if the "new" option is selected, download raw data and install relevant libraries
-elif [ $1 == *"-n"* ]; then
+elif [ "${FLAG}" == *"new"* ]; then
 	echo "Installing subword-nmt"
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
+	pip install subword-nmt
 	
 	echo "Installing youtube-dl"
 	cd $FV
 	git clone https://github.com/ytdl-org/youtube-dl.git
+	pip install youtube_dl
 	
 	#get raw captions
 	echo "Fetching Datasets"
