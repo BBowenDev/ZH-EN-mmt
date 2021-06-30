@@ -1,6 +1,5 @@
 #!/bin/bash
 FV=$(pwd)
-FLAG=""
 
 #check positional arguments:
 #$1 <pretrain/new>: if pretrain, use pretrained zh-en dynamicconv model; elif new, create new model
@@ -21,11 +20,9 @@ else
 			;;
 		-p) #-p to use pretrained features
 			echo "Preparing Pretrained Model"
-			FLAG="-p"
 			;;
 		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
-			FLAG="-n" 
 			;;
 		*)
 			echo "Usage: preprocess.sh -arg"
@@ -87,7 +84,7 @@ if [ ! -d "${FV}/external" ]; then
 fi
 
 #if the "pretrain" option is selected, then download pretrained data & pretrained features
-if [ $FLAG == *"-p"* ]; then
+if [ $1 == *"-p"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -103,7 +100,7 @@ if [ $FLAG == *"-p"* ]; then
 	wait
 
 #if the "new" option is selected, download raw data and install relevant libraries
-elif [ $FLAG == *"-n"* ]; then
+elif [ $1 == *"-n"* ]; then
 	echo "Installing subword-nmt"
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
