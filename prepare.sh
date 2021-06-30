@@ -72,18 +72,18 @@ if [ ! -d "${FV}/external" ]; then
 	echo "Installing Fairseq"
 	cd $FV/external
 	git clone https://github.com/pytorch/fairseq &
-	echo "Installing Apex"
-	git clone https://github.com/NVIDIA/apex &
+	#echo "Installing Apex"
+	#git clone https://github.com/NVIDIA/apex &
 	wait
 
 	cd $FV/external/fairseq
 	git submodule update --init --recursive
 	
-	cd $FV/external/apex
-	python setup.py install --cuda_ext --cpp_ext
+	#cd $FV/external/apex
+	#python setup.py install --cuda_ext --cpp_ext
 	
 	pip install fairseq &
-	pip install apex &
+	#pip install apex &
 	wait
 fi
 
