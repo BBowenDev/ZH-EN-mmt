@@ -81,10 +81,6 @@ if [ ! -d "${FV}/external" ]; then
 	
 	#cd $FV/external/apex
 	#python setup.py install --cuda_ext --cpp_ext
-	
-	pip install fairseq &
-	#pip install apex &
-	wait
 fi
 
 #if the "pretrain" option is selected, then download pretrained data & pretrained features
@@ -123,4 +119,5 @@ fi
 echo "Installing Prerequisites"
 #install pip requirements from requirements.txt
 cd $FV
-pip install -r requirements.txt --no-index --find-links
+pip install -r requirements.txt --no-index --find-links &
+wait
