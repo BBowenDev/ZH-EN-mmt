@@ -88,7 +88,7 @@ if [ ! -d "${FV}/external" ]; then
 fi
 
 #if the "pretrain" option is selected, then download pretrained data & pretrained features
-if [ $1 == *"pretrain"* ]; then
+if [ $FLAG == *"pretrain"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -104,7 +104,7 @@ if [ $1 == *"pretrain"* ]; then
 	wait
 
 #if the "new" option is selected, download raw data and install relevant libraries
-elif [ $1 == *"new"* ]; then
+elif [ $FLAG == *"new"* ]; then
 	echo "Installing subword-nmt"
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
@@ -123,4 +123,4 @@ fi
 echo "Installing Prerequisites"
 #install pip requirements from requirements.txt
 cd $FV
-pip install -r requirements.txt
+pip install -r requirements.txt --no-index --find-links
