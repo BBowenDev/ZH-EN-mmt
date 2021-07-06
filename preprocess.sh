@@ -1,5 +1,43 @@
 #!/bin/bash
 
+if [ -z $1 ]; then
+	echo "Required Arguments: -m | -t"
+	exit 0
+else 
+	REQ=0
+	while test $# -gt 0; do
+		case "$1" in 
+			-h)
+				echo "Usage: preprocess.sh -arg val -arg val"
+				echo "--Use -m to specify the number of merges used in BPE encoding (average"
+				exit 0
+				;;
+			-m) #-m to specify merges for BPE 
+				
+				;;
+			-t)
+				;;
+			*) 
+				;;
+		esac 
+fi
+			
+			
+		
+	done
+	
+	
+	case $#
+
+
+
+fi
+
+
+
+
+
+
 if [ ! -z $1 ]; then
   MERGES = $1
 else; then
