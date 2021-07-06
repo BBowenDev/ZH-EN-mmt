@@ -1,38 +1,6 @@
 #!/bin/bash
 FV=$(pwd)
 
-#check positional arguments:
-#$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
-if [ -z $1 ]; then
-	show_help
-else
-	case $1 in 
-		-h) #-h for help
-			show_help
-			;;
-		-p) #-p to use pretrained features
-			echo "Preparing Pretrained Model"
-			prep_pretrain
-			;;
-		-n)#-n to train new features and vocabularies
-			echo "Preparing New Model"
-			prep_new
-			;;
-		-d)#-d to get essentials for downloading videos and preprocessing
-			echo "Preparing for New Model Download"
-			prep_download
-			;;
-		*)
-			echo "Usage: preprocess.sh -arg"
-			echo "--Use -p to use a pretrained model"
-			echo "--Use -n to create a new model"
-			echo "--Use -h for help"
-			exit 0
-			;;
-	esac
-fi
-
-
 function show_help {
 	echo "Usage: preprocess.sh -arg"
 	echo "--Use -p to use a pretrained model (easiest)"
@@ -166,3 +134,36 @@ function prep_download {
 	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
 	wait
 }
+
+
+
+#check positional arguments:
+#$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
+if [ -z $1 ]; then
+	show_help
+else
+	case $1 in 
+		-h) #-h for help
+			show_help
+			;;
+		-p) #-p to use pretrained features
+			echo "Preparing Pretrained Model"
+			prep_pretrain
+			;;
+		-n)#-n to train new features and vocabularies
+			echo "Preparing New Model"
+			prep_new
+			;;
+		-d)#-d to get essentials for downloading videos and preprocessing
+			echo "Preparing for New Model Download"
+			prep_download
+			;;
+		*)
+			echo "Usage: preprocess.sh -arg"
+			echo "--Use -p to use a pretrained model"
+			echo "--Use -n to create a new model"
+			echo "--Use -h for help"
+			exit 0
+			;;
+	esac
+fi
