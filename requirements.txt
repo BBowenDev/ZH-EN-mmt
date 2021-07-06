@@ -1,6 +1,0 @@
-fairseq
-apex
-nltk 
-jieba
-sacremoses
-torch
