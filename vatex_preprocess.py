@@ -118,7 +118,7 @@ for file in out_files:
                         f.write(words + "\n")
     
     #output video ids to file
-    with open(raw_path + file + ".ids" + ".txt", "w", encoding="utf-8") as l:
-        print("--", file + ".ids.txt")
+    with open(raw_path + file + ".ids", "w", encoding="utf-8") as l:
+        print("--", file + ".ids")
         for line in ids[file]:
             l.write(line + "\n")
