@@ -1,35 +1,26 @@
 #!/bin/bash
 FV=$(pwd)
-FLAG=""
 
 #check positional arguments:
 #$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
 if [ -z $1 ]; then
-	echo "Usage: preprocess.sh -arg"
-	echo "--Use -p to use a pretrained model"
-	echo "--Use -n to create a new model"
-	echo "--Use -h for help"
-	exit 0
+	show_help
 else
 	case $1 in 
 		-h) #-h for help
-			echo "Usage: preprocess.sh -arg"
-			echo "--Use -p to use a pretrained model"
-			echo "--Use -n to create a new model"
-			echo "--Use -h for help"
-			exit 0
+			show_help
 			;;
 		-p) #-p to use pretrained features
 			echo "Preparing Pretrained Model"
-			FLAG="pretrain"
+			prep_pretrain
 			;;
 		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
-			FLAG="new"
+			prep_new
 			;;
 		-d)#-d to get essentials for downloading videos and preprocessing
 			echo "Preparing for New Model Download"
-			FLAG="download"
+			prep_download
 			;;
 		*)
 			echo "Usage: preprocess.sh -arg"
@@ -41,57 +32,79 @@ else
 	esac
 fi
 
-echo "Formatting Directories"
-#format directories
-if [ ! -d "${FV}/models" ]; then
-	mkdir $FV/models
-fi
 
-if [ ! -d "${FV}/vatex" ]; then
-	#create vatex folders
-	mkdir $FV/vatex
-	mkdir $FV/vatex/scripts
-	mkdir $FV/vatex/raw
-	mkdir $FV/vatex/tok
-	mkdir $FV/vatex/bpe
-	mkdir $FV/vatex/vocab
-	mkdir $FV/vatex/feats
-fi
+function show_help {
+	echo "Usage: preprocess.sh -arg"
+	echo "--Use -p to use a pretrained model (easiest)"
+	echo "--Use -n to create a new model (largest)"
+	echo "--Use -d for video download (smallest)"
+	echo "--Use -h for help"
+	exit 0
+}
 
-VATEX=$FV/vatex
-RAW=$VATEX/raw
-FEATS=$VATEX/feats
+function prep_all {
+	echo "Formatting Directories"
+	#format directories
+	if [ ! -d "${FV}/models" ]; then
+		mkdir $FV/models
+	fi
 
-#check CUDA installation/version (10.2 required)
-#CV=$(nvcc --version)
-#if [ "${CV}" != *"release 10.2"* ]; then
-#	echo "Installing CUDA 10.2"
-#	apt-get install cuda-10-2 &
-#	wait
-#fi
+	if [ ! -d "${FV}/vatex" ]; then
+		#create vatex folders
+		mkdir $FV/vatex
+		mkdir $FV/vatex/scripts
+		mkdir $FV/vatex/raw
+		mkdir $FV/vatex/tok
+		mkdir $FV/vatex/bpe
+		mkdir $FV/vatex/vocab
+		mkdir $FV/vatex/feats
+	fi
 
-#if the external intallations directory (fairseq, apex) does not exist, install both
-if [ ! -d "${FV}/external" ]; then 
-	#create missing directories
-	mkdir $FV/external
+	VATEX=$FV/vatex
+	RAW=$VATEX/raw
+	FEATS=$VATEX/feats
 	
-	#install fairseq
-	echo "Installing Fairseq"
-	cd $FV/external
-	git clone https://github.com/pytorch/fairseq &
-	#echo "Installing Apex"
-	#git clone https://github.com/NVIDIA/apex &
+	#if the external intallations directory (fairseq, apex) does not exist, install both
+	if [ ! -d "${FV}/external" ]; then 
+		#create missing directories
+		mkdir $FV/external
+
+		#check CUDA installation/version (10.2 required)
+		#CV=$(nvcc --version)
+		#if [ "${CV}" != *"release 10.2"* ]; then
+		#	echo "Installing CUDA 10.2"
+		#	apt-get install cuda-10-2 &
+		#	wait
+		#fi
+
+		#install fairseq
+		echo "Installing Fairseq"
+		cd $FV/external
+		git clone https://github.com/pytorch/fairseq &
+		#echo "Installing Apex"
+		#git clone https://github.com/NVIDIA/apex &
+		wait
+
+		cd $FV/external/fairseq
+		git submodule update --init --recursive
+
+		#cd $FV/external/apex
+		#python setup.py install --cuda_ext --cpp_ext
+	fi
+	
+	echo "Installing General Prerequisites"
+	pip install fairseq &
+	pip install apex &
+	pip install torch &
+	pip install subword-nmt &
+	pip install sacremoses &
 	wait
+}
 
-	cd $FV/external/fairseq
-	git submodule update --init --recursive
+#for a pretrained model, download pretrained data & pretrained features
+function prep_pretrain {
+	prep_all
 	
-	#cd $FV/external/apex
-	#python setup.py install --cuda_ext --cpp_ext
-fi
-
-#if the "pretrain" option is selected, then download pretrained data & pretrained features
-if [ "${FLAG}" == *"pretrain"* ]; then
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -106,27 +119,50 @@ if [ "${FLAG}" == *"pretrain"* ]; then
 	wget "https://vatex-feats.s3.amazonaws.com/public_test.zip" -P $FEATS &
 	wait
 
-#if the "new" option is selected, download raw data and install relevant libraries
-elif [ "${FLAG}" == *"new"* ]; then
+}
+
+#for a new model, download raw data and install relevant libraries
+function prep_new {
+	prep_all
+	
 	echo "Installing subword-nmt"
 	cd $FV
 	git clone https://github.com/rsennrich/subword-nmt
 	pip install subword-nmt
-	
-	echo "Installing youtube-dl"
-	cd $FV
-	git clone https://github.com/ytdl-org/youtube-dl.git
-	pip install youtube_dl
+
+	echo "Installing Prerequisites"
+	pip install nltk &
+	pip install jieba &
+	pip install youtube-dl &
+	pip install ffmpeg &
+	wait
 	
 	#get raw captions
 	echo "Fetching Datasets"
 	wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
 	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
 	wait
-fi
+}
 
-echo "Installing Prerequisites"
-#install pip requirements from requirements.txt
-cd $FV
-pip install -r requirements.txt --no-index &
-wait
+function prep_download {
+	if [ ! -d "${FV}/vatex" ]; then
+		#create vatex folders
+		mkdir $FV/vatex
+		mkdir $FV/vatex/scripts
+		mkdir $FV/vatex/raw
+		mkdir $FV/vatex/tok
+		mkdir $FV/vatex/bpe
+		mkdir $FV/vatex/vocab
+		mkdir $FV/vatex/feats
+	fi	
+	
+	local VATEX=$FV/vatex
+	local RAW=$VATEX/raw
+	local FEATS=$VATEX/feats
+	
+	#get raw captions
+	echo "Fetching Datasets"
+	wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
+	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
+	wait
+}
