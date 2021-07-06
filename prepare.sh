@@ -27,6 +27,10 @@ else
 			echo "Preparing New Model"
 			FLAG="new"
 			;;
+		-d)#-d to get essentials for downloading videos and preprocessing
+			echo "Preparing for New Model Download"
+			FLAG="download"
+			;;
 		*)
 			echo "Usage: preprocess.sh -arg"
 			echo "--Use -p to use a pretrained model"
