@@ -10,6 +10,7 @@ function show_help {
 	exit 0
 }
 
+#general purpose preparations that apply to most versions of the model
 function prep_all {
 	echo "Formatting Directories"
 	#format directories
@@ -86,7 +87,6 @@ function prep_pretrain {
 	wget "https://vatex-feats.s3.amazonaws.com/trainval.zip" -P $FEATS &
 	wget "https://vatex-feats.s3.amazonaws.com/public_test.zip" -P $FEATS &
 	wait
-
 }
 
 #for a new model, download raw data and install relevant libraries
@@ -134,8 +134,6 @@ function prep_download {
 	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
 	wait
 }
-
-
 
 #check positional arguments:
 #$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
