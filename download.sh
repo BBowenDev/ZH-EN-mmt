@@ -1,7 +1,10 @@
 #!/bin/bash
 
 FV=$(pwd)
-RAW=$FV/vatex/raw
+
+cd $FV/vatex/raw
+mkdir videos
+cd videos
 
 function dw_all {
 	local SEEN=0
