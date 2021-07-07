@@ -73,7 +73,7 @@ else
 				shift
 				if test $# -gt 0; then
 					MERGES=${1}
-					eho "MERGE SIZE:"
+					echo "MERGE SIZE:"
 					echo $T
 				else 
 					echo "Error in arg -m:"
