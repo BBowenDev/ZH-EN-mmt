@@ -60,8 +60,8 @@ function proc {
 
 #check positional arguments
 if [ -z $1 ]; then
-	$MERGES=10000
-	$T=1000
+	MERGES=10000
+	T=1000
 	exit 0
 else 
 	
@@ -73,7 +73,7 @@ else
 			-m) #number of merges for BPE (required)
 				shift
 				if test $# -gt 0; then
-					$MERGES=${1}
+					MERGES=${1}
 				else 
 					echo "Error in arg -m:"
 					show_help
@@ -84,7 +84,7 @@ else
 			-t) #number of videos in the created test set (required)
 				shift
 				if test $# -gt 0; then
-					$T=${2}
+					T=${2}
 				else
 					echo "Error in arg -t:"
 					show_help
