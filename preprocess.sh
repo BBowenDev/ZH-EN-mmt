@@ -60,6 +60,7 @@ function proc {
 
 #check positional arguments
 if [ -z $1 ]; then
+	echo "Using Default Values M=10000 | T=1000"
 	MERGES=10000
 	T=1000
 else 
@@ -73,6 +74,7 @@ else
 				shift
 				if test $# -gt 0; then
 					MERGES=${1}
+					echo "ARG: ${1}"
 					echo "MERGE SIZE:"
 					echo $T
 				else 
@@ -86,6 +88,7 @@ else
 				shift
 				if test $# -gt 0; then
 					T=${2}
+					echo "ARG: ${1}"
 					echo "TEST SIZE:"
 					echo $T
 				else
