@@ -100,3 +100,6 @@ else
 		esac 
 	done
 fi
+
+#run preprocessing
+proc
