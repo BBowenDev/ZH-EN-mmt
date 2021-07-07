@@ -42,7 +42,7 @@ function dw_select {
 	set -e
 	input="${RAW}/*.ids"
 	while IFS='_' read -r -a ARR; do 
-	  if [[ $SEEN -gte $NUM ]]; then
+	  if [[ $SEEN -ge $NUM ]]; then
 	  	break
 	  fi
 	  
