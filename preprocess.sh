@@ -40,7 +40,6 @@ function proc {
 			python $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
 		done
 	done
-	wait
 
 	#once all BPE has been learned, it is applied
 	echo "Applying BPE:"
@@ -55,7 +54,6 @@ function proc {
 			python $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
 		done
 	done
-	wait
 }
 
 #check positional arguments
@@ -74,9 +72,6 @@ else
 				shift
 				if test $# -gt 0; then
 					MERGES=${1}
-					echo "ARG: ${1}"
-					echo "MERGE SIZE:"
-					echo $MERGES
 				else 
 					echo "Error in arg -m:"
 					show_help
@@ -88,9 +83,6 @@ else
 				shift
 				if test $# -gt 0; then
 					T=${1}
-					echo "ARG: ${1}"
-					echo "TEST SIZE:"
-					echo $T
 				else
 					echo "Error in arg -t:"
 					show_help
