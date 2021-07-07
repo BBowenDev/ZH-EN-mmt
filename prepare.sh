@@ -27,6 +27,7 @@ function prep_all {
 		mkdir $FV/vatex/bpe
 		mkdir $FV/vatex/vocab
 		mkdir $FV/vatex/feats
+		mv vatex_preprocess.py $FV/vatex/scripts
 	fi
 
 	VATEX=$FV/vatex
