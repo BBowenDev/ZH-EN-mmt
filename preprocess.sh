@@ -23,7 +23,7 @@ function proc {
 	#run preprocessing script on raw captions, tokenizing and saving to new files
 	echo "Tokenizing dataset"
 	cd $VT/scripts
-	python vatex_preprocess.py -t ${T} -f "True"
+	python vatex_preprocess.py -f True -t $MERGES
 
 	#10,000 merge operations are used (can be hyperparamaterized)
 	#learning and applying bpe are broken up so they can be parallelized
@@ -62,7 +62,6 @@ function proc {
 if [ -z $1 ]; then
 	MERGES=10000
 	T=1000
-	exit 0
 else 
 	
 	while test $# -gt 0; do
@@ -73,7 +72,8 @@ else
 			-m) #number of merges for BPE (required)
 				shift
 				if test $# -gt 0; then
-					export MERGES=${1}
+					MERGES=${1}
+					echo $T
 				else 
 					echo "Error in arg -m:"
 					show_help
@@ -84,7 +84,8 @@ else
 			-t) #number of videos in the created test set (required)
 				shift
 				if test $# -gt 0; then
-					export T=${2}
+					T=${2}
+					echo $T
 				else
 					echo "Error in arg -t:"
 					show_help
