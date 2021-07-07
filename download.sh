@@ -1,12 +1,14 @@
 #!/bin/bash
 
 FV=$(pwd)
-
-cd $FV/vatex/raw
+RAW=$FV/vatex/raw
+cd $RAW
 mkdir videos
 cd videos
 
 function dw_all {
+	echo "Downloading all VaTeX Videos"
+	
 	local SEEN=0
 	local ERR=0
 	
@@ -31,6 +33,8 @@ function dw_all {
 }
 
 function dw_select {
+	echo "Downloading ${1} VaTeX Videos"
+	
 	local NUM=$1
 	local ERR=0
 	local SEEN=0
