@@ -21,7 +21,7 @@ function dw_all {
 	  CHECK=$ERR
 	  #for every video, download from timeframe
 	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
-	  if [[ CHECK -eq ERR ]]; then
+	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
 	  fi
 	done
@@ -38,7 +38,7 @@ function dw_select {
 	set -e
 	input="${RAW}/*.ids"
 	while IFS='_' read -r -a ARR; do 
-	  if [[ SEEN -gte NUM ]]; then
+	  if [[ $SEEN -gte $NUM ]]; then
 	  	break
 	  fi
 	  
@@ -51,7 +51,7 @@ function dw_select {
 	  #for every video, download from timeframe
 	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
 	  
-	  if [[ CHECK -eq ERR ]]; then
+	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
 	  fi
 	done
@@ -60,8 +60,8 @@ function dw_select {
 	echo "--Videos Skipped: ${ERR}"
 }
 
-if [ ! -z $1 ]; then
-	dw_select $1
-else
+if [ -z $1 ]; then
 	dw_all
+else
+	dw_select $1
 fi
