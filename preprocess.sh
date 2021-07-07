@@ -23,7 +23,7 @@ function proc {
 	#run preprocessing script on raw captions, tokenizing and saving to new files
 	echo "Tokenizing dataset"
 	cd $VT/scripts
-	python vatex_preprocess.py -t T -f "True"
+	python vatex_preprocess.py -t $T -f "True"
 
 	#10,000 merge operations are used (can be hyperparamaterized)
 	#learning and applying bpe are broken up so they can be parallelized
