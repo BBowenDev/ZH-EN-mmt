@@ -5,7 +5,6 @@ function show_help {
 	echo "Usage: preprocess.sh -arg"
 	echo "--Use -p to use a pretrained model (easiest)"
 	echo "--Use -n to create a new model (largest)"
-	echo "--Use -d for video download (smallest)"
 	echo "--Use -h for help"
 	exit 0
 }
@@ -116,20 +115,6 @@ function prep_new {
 	wait
 }
 
-function prep_download {
-	prep_dirs
-	
-	local VATEX=$FV/vatex
-	local RAW=$VATEX/raw
-	local FEATS=$VATEX/feats
-	
-	#get raw captions
-	echo "Fetching Datasets"
-	wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
-	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
-	wait
-}
-
 #check positional arguments:
 #$1 : if -p, use pretrained zh-en dynamicconv model; elif -n, create new model
 if [ -z $1 ]; then
@@ -146,10 +131,6 @@ else
 		-n)#-n to train new features and vocabularies
 			echo "Preparing New Model"
 			prep_new
-			;;
-		-d)#-d to get essentials for downloading videos and preprocessing
-			echo "Preparing for New Model Download"
-			prep_download
 			;;
 		*)
 			echo "Usage: preprocess.sh -arg"
