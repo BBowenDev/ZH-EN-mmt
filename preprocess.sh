@@ -87,7 +87,7 @@ else
 			-t) #number of videos in the created test set (required)
 				shift
 				if test $# -gt 0; then
-					T=${2}
+					T=${1}
 					echo "ARG: ${1}"
 					echo "TEST SIZE:"
 					echo $T
