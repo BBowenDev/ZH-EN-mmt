@@ -11,7 +11,7 @@ function show_help {
 }
 
 #general purpose preparations that apply to most versions of the model
-function prep_all {
+function prep_dirs {
 	echo "Formatting Directories"
 	#format directories
 	if [ ! -d "${FV}/models" ]; then
@@ -29,7 +29,10 @@ function prep_all {
 		mkdir $FV/vatex/feats
 		mv vatex_preprocess.py $FV/vatex/scripts
 	fi
+}
 
+function prep_all {
+	prep_dirs
 	VATEX=$FV/vatex
 	RAW=$VATEX/raw
 	FEATS=$VATEX/feats
@@ -114,16 +117,7 @@ function prep_new {
 }
 
 function prep_download {
-	if [ ! -d "${FV}/vatex" ]; then
-		#create vatex folders
-		mkdir $FV/vatex
-		mkdir $FV/vatex/scripts
-		mkdir $FV/vatex/raw
-		mkdir $FV/vatex/tok
-		mkdir $FV/vatex/bpe
-		mkdir $FV/vatex/vocab
-		mkdir $FV/vatex/feats
-	fi	
+	prep_dirs
 	
 	local VATEX=$FV/vatex
 	local RAW=$VATEX/raw
