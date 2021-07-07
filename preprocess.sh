@@ -76,7 +76,7 @@ else
 					MERGES=${1}
 					echo "ARG: ${1}"
 					echo "MERGE SIZE:"
-					echo $T
+					echo $MERGES
 				else 
 					echo "Error in arg -m:"
 					show_help
