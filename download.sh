@@ -69,8 +69,63 @@ function dw_select {
 	echo "--Videos Skipped: ${ERR}"
 }
 
-function test {
+function download_all {
+	for FILE in "$RAW"/*.ids; do 
+		
 	
+	
+	
+	
+	done
+}
+
+function download_select {
+	echo "Downloading ${1} videos"
+	MAX=$1
+	SEEN=0
+	ERR=0
+	for FILE in "$RAW"/*.ids; do
+		ERR=0
+		while read -r L; do
+			#if the given number of videos has been downloaded, break loop
+			if [[ $SEEN -ge $MAX ]]; then 
+				echo "Seen a Maximum of ${SEEN} Lines"
+				break
+			fi
+			
+			#set the string delimiter to "_" to break up each line into an array
+			IFS="_" read -r -a ARR <<< $L
+		
+			ID=${ARR[0]} #video ID
+		  	IN=${ARR[1]} #clip start time
+	  		OUT=${ARR[2]} #clip end time
+	 	 	LN=$((${OUT}-${IN})) #clip duration
+			
+			CHECK=$ERR
+			#for every video, download from given timeframe
+			
+			echo "Starting Download ${ARR[0]}: ${SEEN}/${MAX}"
+			#access whole video with youtube-dl
+			#reencode and save selected clip with ffmpeg
+			#if the download doesn't complete or an error is returned, skip and increment error count
+			ffmpeg --s $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $L -vcodec copy || true; let ERR++
+			
+			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
+			#increment the number of successful videos
+			if [[ $CHECK -eq $ERR ]]; then
+				let SEEN++
+				echo "Successfully Downloaded Video ${ARR[0]}"
+			fi
+			
+		done < $FILE
+		echo "--Videos Downloaded in ${FILE}: ${SEEN}"
+		echo "--Videos Skipped in ${FILE}: ${ERR}"
+	done
+}
+
+
+'''
+function test {
 	for FILE in "$RAW"/*.ids; do
 		echo "Testing ${FILE} with ${1} Lines"
 		MAX=$1
@@ -86,12 +141,11 @@ function test {
 		done < $FILE
 	done
 }
-
+'''
 
 if [ -z $1 ]; then
 	#dw_all
 	test $1
 else
-	#dw_select $1
-	test $1
+	download_select $1
 fi
