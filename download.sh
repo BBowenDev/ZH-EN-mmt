@@ -25,6 +25,7 @@ function dw_all {
 	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
 	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
+		echo "Successfully Downloaded ${SEEN} Videos"
 	  fi
 	done
 	
