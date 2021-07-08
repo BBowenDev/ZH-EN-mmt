@@ -87,7 +87,7 @@ function test {
 
 if [ -z $1 ]; then
 	#dw_all
-	test $10
+	test $1
 else
 	#dw_select $1
 	test $1
