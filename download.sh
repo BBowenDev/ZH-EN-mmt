@@ -1,11 +1,5 @@
 #!/bin/bash
 
-FV=$(pwd)
-RAW=$FV/vatex/raw
-cd $RAW
-mkdir videos
-cd videos
-
 function dw_all {
 	echo "Downloading all VaTeX Videos"
 	
@@ -73,6 +67,11 @@ function dw_select {
 }
 
 function test {
+	inputs="ls ${RAW}/vids/*.ids"
+	for entry in inputs; do
+		echo "$entry"
+	done
+	
 	echo "Testing with ${1} Lines"
 	MAX=$1
 	SEEN=0
