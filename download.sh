@@ -77,10 +77,13 @@ function test {
 		SEEN=0
 		while read -r L; do
 			if [[ $SEEN -ge $MAX ]]; then
-				echo "Seen a maximum of ${SEEN} lines"	
+				echo "Seen a maximum of ${SEEN} lines"
+				break
 			fi
+			IFS="_" read -r -a ARR <<< $L
+			echo "$ARR[0]"
 			echo "$L"
-		done < FILE
+		done < $FILE
 	done
 }
 
