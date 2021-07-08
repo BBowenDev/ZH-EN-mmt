@@ -14,7 +14,11 @@ function dw_all {
 
 	set -e
 	input="${RAW}/*.ids"
-	while IFS='_' read -r -a ARR; do 
+	while read l; do 
+	  
+	  
+	  IFS='_' read -r -a ARR
+	  
 	  ID=${ARR[0]}
 	  IN=${ARR[1]}
 	  OUT=${ARR[2]}
@@ -68,8 +72,23 @@ function dw_select {
 	echo "--Videos Skipped: ${ERR}"
 }
 
+function test {
+	MAX=$1
+	SEEN=0
+	while read l; do
+		if [[ $SEEN -ge $MAX ]]; then
+			echo "Seen a maximum of ${SEEN} lines"	
+		fi
+		
+		echo "$p"
+	done <${RAW}/*.ids
+}
+
+
 if [ -z $1 ]; then
-	dw_all
+	#dw_all
+	test $10
 else
-	dw_select $1
+	#dw_select $1
+	test $1
 fi
