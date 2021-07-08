@@ -68,20 +68,19 @@ function dw_select {
 
 function test {
 	
-	for entry in "$RAW/*.ids"; do
-		echo "$entry"
+	for entry in "$RAW/"*.ids; do
+		echo "Testing ${entry} with ${1} Lines"
+		MAX=$1
+		SEEN=0
+		while read l; do
+			if [[ $SEEN -ge $MAX ]]; then
+				echo "Seen a maximum of ${SEEN} lines"	
+			fi
+			echo "$p"
+		done <entry
 	done
 	
-	echo "Testing with ${1} Lines"
-	MAX=$1
-	SEEN=0
-	while read l; do
-		if [[ $SEEN -ge $MAX ]]; then
-			echo "Seen a maximum of ${SEEN} lines"	
-		fi
-		
-		echo "$p"
-	done
+	
 }
 
 
