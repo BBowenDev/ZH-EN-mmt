@@ -71,11 +71,7 @@ function dw_select {
 
 function download_all {
 	for FILE in "$RAW"/*.ids; do 
-		
-	
-	
-	
-	
+		echo "TEST"	
 	done
 }
 
