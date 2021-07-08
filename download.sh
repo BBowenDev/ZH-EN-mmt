@@ -1,5 +1,8 @@
 #!/bin/bash
 
+FV=$(pwd)
+RAW=$FV/vatex/raw
+
 function dw_all {
 	echo "Downloading all VaTeX Videos"
 	
