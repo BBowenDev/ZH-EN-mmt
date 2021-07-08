@@ -22,6 +22,7 @@ function prep_dirs {
 		mkdir $FV/vatex
 		mkdir $FV/vatex/scripts
 		mkdir $FV/vatex/raw
+		mkdir $FV/vatex/raw/vids
 		mkdir $FV/vatex/tok
 		mkdir $FV/vatex/bpe
 		mkdir $FV/vatex/vocab
