@@ -67,8 +67,8 @@ function dw_select {
 }
 
 function test {
-	inputs="ls ${RAW}/vids/*.ids"
-	for entry in $inputs; do
+	
+	for entry in "$RAW/vids/"*.ids; do
 		echo "$entry"
 	done
 	
