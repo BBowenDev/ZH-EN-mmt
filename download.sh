@@ -68,7 +68,7 @@ function dw_select {
 
 function test {
 	
-	for entry in "$RAW/vids/"*.ids; do
+	for entry in "$RAW/vids/*.ids"; do
 		echo "$entry"
 	done
 	
@@ -81,7 +81,7 @@ function test {
 		fi
 		
 		echo "$p"
-	done <${RAW}/*.ids
+	done
 }
 
 
