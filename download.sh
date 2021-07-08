@@ -73,6 +73,7 @@ function dw_select {
 }
 
 function test {
+	echo "Testing with ${1} Lines"
 	MAX=$1
 	SEEN=0
 	while read l; do
