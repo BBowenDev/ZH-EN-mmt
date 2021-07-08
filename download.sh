@@ -71,7 +71,7 @@ function dw_select {
 
 function download_all {
 	for FILE in "$RAW"/*.ids; do 
-		echo "TEST"	
+		echo "remove later"	
 	done
 }
 
@@ -118,26 +118,6 @@ function download_select {
 		echo "--Videos Skipped in ${FILE}: ${ERR}"
 	done
 }
-
-
-'''
-function test {
-	for FILE in "$RAW"/*.ids; do
-		echo "Testing ${FILE} with ${1} Lines"
-		MAX=$1
-		SEEN=0
-		while read -r L; do
-			if [[ $SEEN -ge $MAX ]]; then
-				echo "Seen a maximum of ${SEEN} lines"
-				break
-			fi
-			IFS="_" read -r -a ARR <<< $L
-			echo "$ARR[0]"
-			echo "$L"
-		done < $FILE
-	done
-}
-'''
 
 if [ -z $1 ]; then
 	#dw_all
