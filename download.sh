@@ -11,7 +11,7 @@ function dw_all {
 	
 	local SEEN=0
 	local ERR=0
-	
+
 	set -e
 	input="${RAW}/*.ids"
 	while IFS='_' read -r -a ARR; do 
@@ -22,6 +22,7 @@ function dw_all {
 	  
 	  CHECK=$ERR
 	  #for every video, download from timeframe
+	  echo "Starting Download ${SEEN}"
 	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
 	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
@@ -54,10 +55,12 @@ function dw_select {
 	  
 	  CHECK=$ERR
 	  #for every video, download from timeframe
+	  echo "Starting Download ${SEEN}"
 	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
 	  
 	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
+		echo "Successfully Downloaded ${SEEN} Videos"
 	  fi
 	done
 	
