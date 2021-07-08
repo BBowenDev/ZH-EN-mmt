@@ -71,7 +71,7 @@ function dw_select {
 
 function test {
 	
-	for FILE in "$RAW/*.ids"; do
+	for FILE in "$RAW"/*.ids; do
 		echo "Testing ${FILE} with ${1} Lines"
 		MAX=$1
 		SEEN=0
