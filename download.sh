@@ -90,6 +90,10 @@ function download_select {
 				break
 			fi
 			
+			#get video file location (e.g. test, val, train)
+			IFS="/" read -r -a FARR <<< $FILE
+			FILE="${FARR[-1]}"
+			
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="_" read -r -a ARR <<< $L
 			
