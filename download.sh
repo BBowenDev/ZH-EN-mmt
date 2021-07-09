@@ -124,13 +124,22 @@ function download_select {
 			#if the download doesn't complete or an error is returned, skip and increment error count
 			#-loglevel 8 only shows errors that break the download process
 			#-f mp4/bestvideo captures video and audio in the best accessible format
-			ffmpeg -loglevel 8 -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++) "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++
+			
+			if ffmpeg -loglevel 8 -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4") "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4"; then
+				let SEEN++
+				echo "Successfully Downloaded Video ${ID} ----------------"
+			else 
+				let ERR++
+				echo "Video Download ${ID} Failed ----------------"
+			fi
+			
+			#ffmpeg -loglevel 8 -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++) "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++
 			
 			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
 			#increment the number of successful videos
 			if [[ $CHECK -eq $ERR ]]; then
 				let SEEN++
-				echo "Successfully Downloaded Video ${ARR[0]}"
+				
 			fi
 			
 		done < $FILE
