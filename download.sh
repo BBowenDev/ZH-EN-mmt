@@ -93,8 +93,8 @@ function download_select {
 			IFS="_" read -r -a ARR <<< $L
 		
 			ID=${ARR[0]} #video ID
-		  	IN=${ARR[1]##+(0)} #clip start time (remove padded 0s)
-	  		OUT=${ARR[2]##+(0)} #clip end time (remove padded 0s)
+		  	IN="${ARR[1]#"${ARR[1]%%[!0]*}"}" #clip start time (remove padded 0s)
+	  		OUT="${ARR[2]#"${ARR[2]%%[!0]*}"}" #clip end time (remove padded 0s)
 	 	 	LN=$((${OUT}-${IN})) #clip duration
 			
 			CHECK=$ERR
