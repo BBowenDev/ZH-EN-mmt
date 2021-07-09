@@ -24,7 +24,7 @@ function dw_all {
 	  CHECK=$ERR
 	  #for every video, download from timeframe
 	  echo "Starting Download ${SEEN}"
-	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy || true; let ERR++
+	  ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $LN -vcodec copy -quiet || true; let ERR++
 	  if [[ $CHECK -eq $ERR ]]; then
 	  	let SEEN++
 		echo "Successfully Downloaded ${SEEN} Videos"
@@ -91,15 +91,31 @@ function download_select {
 			
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="_" read -r -a ARR <<< $L
-		
+			
 			ID=${ARR[0]} #video ID
-		  	IN=${ARR[1]#"${ARR[1]%%[!0]*}"} #clip start time (remove padded 0s)
-	  		OUT=${ARR[2]#"${ARR[2]%%[!0]*}"} #clip end time (remove padded 0s)
-	 	 	LN=$((${OUT}-${IN})) #clip duration
 			
-			CHECK=$ERR
+			#set clip start time
+			if [[ $ARR[1] =~ [1-9] ]]; then
+				#If clip start time > 0, trip padded 0s
+				IN=${ARR[1]#"${ARR[1]%%[!0]*}"}
+			else
+				#If clip start time == 0, set input to 0
+				IN=0				
+			fi
+			
+			if [[$ARR[2] =~ [1-9] ]]; then
+	  			#If clip end time > 0, trip padded 0s
+				OUT=${ARR[2]#"${ARR[2]%%[!0]*}"} 			
+			else 
+				#If clip end time == 0, set input to 0
+				OUT=0
+			fi
+			
+			#clip duration is clip end time - clip start time
+	 	 	LN=$((${OUT}-${IN}))
+			
 			#for every video, download from given timeframe
-			
+			CHECK=$ERR			
 			echo "Starting Download ${ARR[0]}: ${SEEN}/${MAX}"
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
