@@ -120,7 +120,7 @@ function download_select {
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			ffmpeg -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg "$RAW/vids/${FILE}.${ARR[0]}.mp4" || true; let ERR++) "$RAW/vids/${FILE}.${ARR[0]}.mp4" || true; let ERR++
+			ffmpeg -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o"$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++) "$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++
 			
 			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
 			#increment the number of successful videos
