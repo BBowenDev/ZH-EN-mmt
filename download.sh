@@ -95,15 +95,16 @@ function download_select {
 			ID=${ARR[0]} #video ID
 			
 			#set clip start time
-			if [[ $ARR[1] =~ [1-9] ]]; then
+			if [[ "${ARR[1]}" =~ [1-9] ]]; then
 				#If clip start time > 0, trip padded 0s
+				I
 				IN=${ARR[1]#"${ARR[1]%%[!0]*}"}
 			else
 				#If clip start time == 0, set input to 0
-				IN=0				
+				IN=0
 			fi
 			
-			if [[$ARR[2] =~ [1-9] ]]; then
+			if [[ "${ARR[2]}" =~ [1-9] ]]; then
 	  			#If clip end time > 0, trip padded 0s
 				OUT=${ARR[2]#"${ARR[2]%%[!0]*}"} 			
 			else 
@@ -116,11 +117,11 @@ function download_select {
 			
 			#for every video, download from given timeframe
 			CHECK=$ERR			
-			echo "Starting Download ${ARR[0]}: ${SEEN}/${MAX}"
+			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			ffmpeg -ss $IN -t $L -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -vcodec copy "${ARR[0]}.mp4" || true; let ERR++
+			ffmpeg -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -vcodec copy "${ARR[0]}.mp4" || true; let ERR++
 			
 			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
 			#increment the number of successful videos
