@@ -93,8 +93,8 @@ function download_select {
 			IFS="_" read -r -a ARR <<< $L
 		
 			ID=${ARR[0]} #video ID
-		  	IN="${ARR[1]#"${ARR[1]%%[!0]*}"}" #clip start time (remove padded 0s)
-	  		OUT="${ARR[2]#"${ARR[2]%%[!0]*}"}" #clip end time (remove padded 0s)
+		  	IN=${ARR[1]#"${ARR[1]%%[!0]*}"} #clip start time (remove padded 0s)
+	  		OUT=${ARR[2]#"${ARR[2]%%[!0]*}"} #clip end time (remove padded 0s)
 	 	 	LN=$((${OUT}-${IN})) #clip duration
 			
 			CHECK=$ERR
@@ -104,7 +104,7 @@ function download_select {
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			ffmpeg --s $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $L -vcodec copy || true; let ERR++
+			ffmpeg -ss $IN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg) -t $L -vcodec copy || true; let ERR++
 			
 			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
 			#increment the number of successful videos
