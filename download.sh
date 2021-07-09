@@ -117,10 +117,13 @@ function download_select {
 			#for every video, download from given timeframe
 			CHECK=$ERR			
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
+			
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			ffmpeg -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o"$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++) "$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++
+			#-f 137 captures video only (no audio)
+			#-f mp4/bestvideo captures video and audio in the best possible format
+			ffmpeg -quiet -ss $IN -t $LN -i $(youtube-dl $ID -q -f 137 --external-downloader ffmpeg -o"$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++) "$RAW/vids/${FILE/$RAW}.${ARR[0]}.mp4" || true; let ERR++
 			
 			#if the video successfully downloads (i.e. the error count hasn't been incremented), 
 			#increment the number of successful videos
