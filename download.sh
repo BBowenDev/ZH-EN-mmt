@@ -97,7 +97,6 @@ function download_select {
 			#set clip start time
 			if [[ "${ARR[1]}" =~ [1-9] ]]; then
 				#If clip start time > 0, trip padded 0s
-				I
 				IN=${ARR[1]#"${ARR[1]%%[!0]*}"}
 			else
 				#If clip start time == 0, set input to 0
