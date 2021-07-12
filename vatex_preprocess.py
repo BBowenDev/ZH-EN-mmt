@@ -52,13 +52,13 @@ for num, data_file in enumerate(jsons):
     for raw_dict in data:
         #format video start and stop time for later ease
         vid = [""]
-	vid[0] = raw_dict["videoID"][0:12]
-	vid.append(raw_dict["videoID"][12:].split("_"))
+        vid[0] = raw_dict["videoID"][0:12]
+        vid.append(raw_dict["videoID"][12:].split("_"))
         
-	v_in = iter(vid[1])
+        v_in = iter(vid[1])
         v_out = iter(vid[2])
-        v_meta[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
-        v_meta[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
+        vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
+        vid[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
         
         #calculate clip duration
         v_in_time = datetime.strptime(vid[1], "%H:%M:%S")
