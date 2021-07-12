@@ -13,9 +13,10 @@ function download_all {
 function download_select {
 	echo "Downloading ${1} videos"
 	MAX=$1
-	SEEN=1
+	SEEN_ALL=0
 	ERR_ALL=0
 	for F_FILE in "$RAW"/*.ids; do
+		SEEN=0
 		ERR=0
 		while read -r L; do
 			#if the given number of videos has been downloaded, break loop
@@ -23,37 +24,22 @@ function download_select {
 				echo "Seen a Maximum of ${SEEN} Lines"
 				break
 			fi 
-			#get video file location (e.g. test, val, train)
-			IFS="/" read -r -a FARR <<< $F_FILE
-			FILE="${FARR[-1]}"
-
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="_" read -r -a ARR <<< $L
 
 			#set video ID
 			ID=${ARR[0]} 
-
 			#set clip start time $IN
-			if [[ "${ARR[1]}" =~ [1-9] ]]; then
-				#if clip start time > 0, trip padded 0s
-				IN=${ARR[1]#"${ARR[1]%%[!0]*}"}
-			else
-				#if clip start time == 0, set input to 0
-				IN=0
-			fi
-
+			IN=${ARR[1]}
 			#set clip end time $OUT
-			if [[ "${ARR[2]}" =~ [1-9] ]]; then
-				#if clip end time > 0, trip padded 0s
-				OUT=${ARR[2]#"${ARR[2]%%[!0]*}"} 			
-			else 
-				#if clip end time == 0, set input to 0
-				OUT=0
-			fi
-
+			OUT=${ARR[2]}
 			#clip duration is (clip end time $OUT - clip start time $IN) = $LN
 			LN=$((${OUT}-${IN}))
 
+			#get video file location (e.g. test, val, train)
+			IFS="/" read -r -a FARR <<< $F_FILE
+			FILE="${FARR[-1]}"
+			
 			#set expected file name
 			NAME=$VIDS/"${FILE}.${ID}.mp4"
 
@@ -87,12 +73,15 @@ function download_select {
 		done < $F_FILE
 		echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
 		echo "--Videos Skipped in ${F_FILE}: ${ERR}"
+		((SEEN_ALL+=SEEN))
 		((ERR_ALL+=ERR))
 		
 	done
 	echo ""
-	echo "--Total Videos Downloaded: ${SEEN}"
+	echo "--Total Videos Downloaded: ${SEEN_ALL}"
 	echo "--Total Videos Skipped: ${ERR_ALL}"
+	RATE=((SEEN_ALL/((SEEN_ALL+ERR_ALL))*100))
+	echo "--Download Success Rate: ${RATE}%"
 }
 
 if [ -z $1 ]; then
