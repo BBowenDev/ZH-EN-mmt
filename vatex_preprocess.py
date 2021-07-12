@@ -53,7 +53,7 @@ for num, data_file in enumerate(jsons):
         #format video start and stop time for later ease
         vid = [""]
         vid[0] = raw_dict["videoID"][0:11]
-        vid += raw_dict["videoID"][11:].split("_")
+        vid += raw_dict["videoID"][12:].split("_")
         print(vid)
 	
         v_in = iter(vid[1])
