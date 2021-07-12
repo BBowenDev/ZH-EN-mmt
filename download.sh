@@ -55,7 +55,7 @@ function download_select {
 			LN=$((${OUT}-${IN}))
 
 			#set expected file name
-			NAME=$VIDS/"${F_FILE}.${ID}"
+			NAME=$VIDS/"${F_FILE}.${ID}.mp4"
 
 			#for every video, download from given time frame
 			YTDL_FAIL=false			
