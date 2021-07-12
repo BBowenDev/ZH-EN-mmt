@@ -90,14 +90,15 @@ function download_select {
 				break
 			fi
 			
-			#get video file location (e.g. test, val, train)
-			IFS="/" read -r -a FARR <<< $FILE
-			FILE="${FARR[-1]}"
-			
+      #get video file location (e.g. test, val, train)
+      IFS="/" read -r -a FARR <<< $FILE
+      FILE="${FARR[-1]}"
+      
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="_" read -r -a ARR <<< $L
 			
-			ID=${ARR[0]} #video ID
+      #video ID
+			ID=${ARR[0]} 
 			
 			#set clip start time
 			if [[ "${ARR[1]}" =~ [1-9] ]]; then
@@ -120,21 +121,32 @@ function download_select {
 	 	 	LN=$((${OUT}-${IN}))
 			
 			#for every video, download from given timeframe
-			CHECK=$ERR			
+			CHECK=$ERR
+      FAIL=false			
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
 			
 			#access whole video with youtube-dl
 			#reencode and save selected clip with ffmpeg
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			#-loglevel 8 only shows errors that break the download process
-			#-f mp4/bestvideo captures video and audio in the best accessible format
+			#ffmpeg -loglevel 8 only shows errors that break the download process
+			#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
+      #youtube-dl -q shows no output
 			
-			if ffmpeg -loglevel 8 -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4") "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4"; then
+      youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -o $VIDS/"${FILE}.${ID}.mp4" || true; FAIL=true
+
+      if [[ $FAIL ]]; then 
+        echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID}"
+      else 
+        echo "-----------------------------------YT-DL FAILED VIDEO ${ID}"
+
+      fi
+      
+			if ((ffmpeg -ss $IN -t $LN -i $DWL_VID)); then
 				let SEEN++
-				echo "Successfully Downloaded Video ${ID} ----------------"
+				echo "----------------FFMPEG ALTERED VIDEO ${ID}"
 			else 
 				let ERR++
-				echo "Video Download ${ID} Failed ----------------"
+				echo "----------------FFMPEG FAILED VIDEO ${ID}"
 			fi
 			
 			#ffmpeg -loglevel 8 -ss $IN -t $LN -i $(youtube-dl $ID -q -f mp4/bestvideo --external-downloader ffmpeg -o "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++) "$VIDS/${FILE/$VIDS}.${ARR[0]}.mp4" || true; let ERR++
