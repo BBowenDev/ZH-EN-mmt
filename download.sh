@@ -25,16 +25,14 @@ function download_select {
 				break
 			fi 
 			#set the string delimiter to "_" to break up each line into an array
-			IFS="_" read -r -a ARR <<< $L
+			IFS="=" read -r -a ARR <<< $L
 
 			#set video ID
 			ID=${ARR[0]} 
 			#set clip start time $IN
 			IN=${ARR[1]}
-			#set clip end time $OUT
-			OUT=${ARR[2]}
-			#clip duration is (clip end time $OUT - clip start time $IN) = $LN
-			LN=$((${OUT}-${IN}))
+			#set clip duration $DR
+			DR=${ARR[2]}
 
 			#get video file location (e.g. test, val, train)
 			IFS="/" read -r -a FARR <<< $F_FILE
@@ -58,7 +56,7 @@ function download_select {
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
-				if (ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy -y ${ID}.mp4); then 
+				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y ${ID}.mp4); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					((SEEN+=1))
 				else
