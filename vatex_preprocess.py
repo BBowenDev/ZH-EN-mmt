@@ -49,8 +49,17 @@ for num, data_file in enumerate(jsons):
     
     print("--", data_file)
     for raw_dict in data:
+     	  #format video start and stop time for later ease
+        vid = raw_dict["videoID"]
+				vid = vid.split("_")
+				v_in = iter(vid[1])
+				vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
+				v_out = iter(vid[2])
+				vid[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
+				vid = "_".join(vid)
+				
         #add video ID to later list
-        ids[data_type].append(raw_dict["videoID"])
+        ids[data_type].append(vid)
         
         if "enCap" in raw_dict.keys():
             if args.full is True: #if using the full dataset, don't truncate
