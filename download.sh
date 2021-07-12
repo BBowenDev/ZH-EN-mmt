@@ -5,7 +5,7 @@ RAW=$FV/vatex/raw
 VIDS=$RAW/vids
 
 function download_all {
-	for FILE in "$RAW"/*.ids; do 
+	for F_FILE in "$RAW"/*.ids; do 
 		echo "remove later"	
 	done
 }
@@ -15,7 +15,7 @@ function download_select {
 	MAX=$1
 	SEEN=1
 	ERR_ALL=0
-	for FILE in "$RAW"/*.ids; do
+	for F_FILE in "$RAW"/*.ids; do
 		ERR=0
 		while read -r L; do
 			#if the given number of videos has been downloaded, break loop
@@ -24,8 +24,8 @@ function download_select {
 				break
 			fi 
 			#get video file location (e.g. test, val, train)
-			IFS="/" read -r -a FARR <<< $FILE
-			F_FILE="${FARR[-1]}"
+			IFS="/" read -r -a FARR <<< $F_FILE
+			FILE="${FARR[-1]}"
 
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="_" read -r -a ARR <<< $L
@@ -55,7 +55,7 @@ function download_select {
 			LN=$((${OUT}-${IN}))
 
 			#set expected file name
-			NAME=$VIDS/"${F_FILE}.${ID}.mp4"
+			NAME=$VIDS/"${FILE}.${ID}.mp4"
 
 			#for every video, download from given time frame	
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
@@ -65,8 +65,8 @@ function download_select {
 			#youtube-dl -q shows no output
 			
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			if (youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
-				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID}"
+			if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
+				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID} 🆗"
 
 				#trim and encode video clip
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
@@ -74,21 +74,21 @@ function download_select {
 				
 				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
 				
-				if (ffmpeg -ss $IN -t $LN -i $NAME -y "${ID}.mp4"); then 
-					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID}"
+				if (ffmpeg -ss $IN -t $LN -i $NAME -c:v libx264 -c:a copy -y ${ID}.mp4); then 
+					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID} ✅"
 					((SEEN+=1))
 				else
 					((ERR+=1))
-					echo "-----------------------------------FFMPEG FAILED VIDEO ${ID}"
+					echo "-----------------------------------FFMPEG FAILED VIDEO ${ID} ❌"
 				fi	
 			else 
-				echo "-----------------------------------YT-DL FAILED VIDEO ${ID}"
+				echo "-----------------------------------YT-DL FAILED VIDEO ${ID} ⚠"
 				((ERR+=1))
 			fi
 					
-		done < $FILE
-		echo "--Videos Downloaded in ${FILE}: ${SEEN}"
-		echo "--Videos Skipped in ${FILE}: ${ERR}"
+		done < $F_FILE
+		echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
+		echo "--Videos Skipped in ${F_FILE}: ${ERR}"
 		((ERR_ALL+=ERR))
 		
 	done
