@@ -18,6 +18,14 @@ function download_select {
 	for F_FILE in "$RAW"/*.ids; do
 		SEEN=0
 		ERR=0
+		
+		#get video file location (e.g. test, val, train)
+		IFS="/" read -r -a FARR <<< $F_FILE
+		FILE="${FARR[-1]}"
+		
+		mkdir $RAW/"${FILE}.vids"
+		OUTDIR = $RAW/"${FILE}.vids"
+		
 		while read -r L; do
 			#if the given number of videos has been downloaded, break loop
 			if [[ $SEEN -gt $MAX ]]; then 
@@ -27,18 +35,15 @@ function download_select {
 			IFS="=" read -r -a ARR <<< $L
 
 			#set video ID
-			ID=${ARR[0]} 
+			ID=${ARR[0]}
+			echo "${ID}"
 			#set clip start time $IN
 			IN=${ARR[1]}
 			#set clip duration $DR
 			DR=${ARR[2]}
 
-			#get video file location (e.g. test, val, train)
-			IFS="/" read -r -a FARR <<< $F_FILE
-			FILE="${FARR[-1]}"
-			
 			#set expected file name
-			NAME=$VIDS/"${FILE}.${ID}.mp4"
+			NAME=$OUTDIR/"${FILE}.${ID}.mp4"
 
 			#for every video, download from given time frame	
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
