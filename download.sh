@@ -57,21 +57,16 @@ function download_select {
 			#set expected file name
 			NAME=$VIDS/"${F_FILE}.${ID}.mp4"
 
-			#for every video, download from given time frame
-			YTDL_FAIL=false			
+			#for every video, download from given time frame	
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
 
 			#access and download whole video with youtube-dl
 			#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
 			#youtube-dl -q shows no output
 			
-			#youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -o "${NAME}" || true; YTDL_FAIL=true
-
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			#--external-downloader ffmpeg
-			if (youtube-dl "${ID}" -f mp4/bestvideo -o $NAME); then
+			if (youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -external-downloader-args -ss $IN -t $LN -i $NAME -c copy $ID -y -o $NAME); then
 				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID}"
-				FF_FAIL=false
 
 				#trim and encode video clip
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
@@ -79,7 +74,6 @@ function download_select {
 				
 				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
 				
-				'''
 				if (ffmpeg -ss $IN -t $LN -i $NAME -c copy $ID -y); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID}"
 					((SEEN+=1))
@@ -90,7 +84,6 @@ function download_select {
 			else 
 				echo "-----------------------------------YT-DL FAILED VIDEO ${ID}"
 				((ERR+=1))
-				'''
 			fi
 					
 		done < $FILE
