@@ -80,8 +80,6 @@ function download_select {
 	echo ""
 	echo "--Total Videos Downloaded: ${SEEN_ALL}"
 	echo "--Total Videos Skipped: ${ERR_ALL}"
-	RATE=((SEEN_ALL/((SEEN_ALL+ERR_ALL))*100))
-	echo "--Download Success Rate: ${RATE}%"
 }
 
 if [ -z $1 ]; then
