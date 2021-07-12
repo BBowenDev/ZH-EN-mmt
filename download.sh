@@ -84,18 +84,12 @@ function download_select {
 				else
 					((ERR+=1))
 					echo "-----------------------------------FFMPEG FAILED VIDEO ${ID}"
-					
-
 				fi	
 			fi
 			
 			else 
 				echo "-----------------------------------YT-DL FAILED VIDEO ${ID}"
 				((ERR+=1))
-				
-				
-
-				
 					
 		done < $FILE
 		echo "--Videos Downloaded in ${FILE}: ${SEEN}"
