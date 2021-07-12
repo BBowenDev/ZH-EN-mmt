@@ -46,8 +46,10 @@ function download_select {
 			#set clip duration $DR
 			DR=${ARR[2]}
 
-			#set expected file name
-			NAME=$OUTDIR/"${FILE}.${ID}.mp4"
+			#set full video download name
+			NAME=$VIDS/"${FILE}.${ID}.mp4"
+			#set trimmed video download name
+			SVNAME=$OUTDIR/"${FILE}.${ID}.mp4"
 
 			#for every video, download from given time frame	
 			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
@@ -64,7 +66,7 @@ function download_select {
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
-				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $NAME); then 
+				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
 					echo "FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					#rm $NAME
 					((SEEN+=1))
