@@ -65,7 +65,7 @@ function download_select {
 			#youtube-dl -q shows no output
 			
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			if (youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -external-downloader-args -ss $IN -t $LN -i $NAME -c copy $ID -y -o $NAME); then
+			if (youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -external-downloader-args "-ss ${IN} -t $LN -i ${NAME} -c copy ${ID} -y" -o $NAME); then
 				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID}"
 
 				#trim and encode video clip
