@@ -21,7 +21,6 @@ function download_select {
 		while read -r L; do
 			#if the given number of videos has been downloaded, break loop
 			if [[ $SEEN -gt $MAX ]]; then 
-				echo "Seen a Maximum of ${SEEN} Lines"
 				break
 			fi 
 			#set the string delimiter to "_" to break up each line into an array
@@ -56,7 +55,7 @@ function download_select {
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
-				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y ${ID}.mp4); then 
+				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $NAME); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					((SEEN+=1))
 				else
@@ -69,6 +68,11 @@ function download_select {
 			fi
 					
 		done < $F_FILE
+		if [[ $SEEN -gt $MAX ]]; then 
+			echo "Seen a Maximum of ${SEEN} Lines"
+			break
+			fi 
+		
 		echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
 		echo "--Videos Skipped in ${F_FILE}: ${ERR}"
 		((SEEN_ALL+=SEEN))
