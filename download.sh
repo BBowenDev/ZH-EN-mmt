@@ -55,7 +55,7 @@ function download_select {
 			LN=$((${OUT}-${IN}))
 
 			#set expected file name
-			NAME=$VIDS/"${F_FILE}.${ID}.mp4"
+			NAME=$VIDS/"${F_FILE}.${ID}"
 
 			#for every video, download from given time frame
 			YTDL_FAIL=false			
@@ -78,7 +78,7 @@ function download_select {
 				
 				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
 
-				if (ffmpeg -ss $IN -t $LN -i $NAME $NAME -y); then 
+				if (ffmpeg -ss $IN -t $LN -i $NAME -c copy $ID -y); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID}"
 					((SEEN+=1))
 				else
