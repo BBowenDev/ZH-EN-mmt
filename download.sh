@@ -23,8 +23,11 @@ function download_select {
 		IFS="/" read -r -a FARR <<< $F_FILE
 		FILE="${FARR[-1]}"
 		
-		mkdir $RAW/"${FILE}.vids"
-		OUTDIR = $RAW/"${FILE}.vids"
+		if [[ ! -d $RAW/"${FILE}.vids" ]]; then
+			mkdir $RAW/"${FILE}.vids"
+		fi
+		#target output folder to storage
+		OUTDIR=$RAW/"${FILE}.vids"
 		
 		while read -r L; do
 			#if the given number of videos has been downloaded, break loop
@@ -33,7 +36,7 @@ function download_select {
 			fi 
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
-
+			
 			#set video ID
 			ID=${ARR[0]}
 			echo "${ID}"
