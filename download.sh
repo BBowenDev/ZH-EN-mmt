@@ -37,9 +37,10 @@ function download_select {
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
 			
+			echo "💚💚💚💚💚💚 ARR: ${ARR}"
+			
 			#set video ID
 			ID=${ARR[0]}
-			echo "${ID}"
 			#set clip start time $IN
 			IN=${ARR[1]}
 			#set clip duration $DR
