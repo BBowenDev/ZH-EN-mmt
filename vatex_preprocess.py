@@ -58,7 +58,7 @@ for num, data_file in enumerate(jsons):
 	
         v_in = iter(vid[1])
         v_out = iter(vid[2])
-        print(v_in, v_out)
+        print(str(v_in), str(v_out))
         vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
         vid[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
         
