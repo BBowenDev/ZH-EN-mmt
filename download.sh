@@ -68,7 +68,8 @@ function download_select {
 			#youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -o "${NAME}" || true; YTDL_FAIL=true
 
 			#if the download doesn't complete or an error is returned, skip and increment error count
-			if (youtube-dl "${ID}" -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
+			#--external-downloader ffmpeg
+			if (youtube-dl "${ID}" -f mp4/bestvideo -o $NAME); then
 				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID}"
 				FF_FAIL=false
 
