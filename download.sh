@@ -74,7 +74,7 @@ function download_select {
 				
 				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
 				
-				if (ffmpeg -ss $IN -t $LN -i $NAME $ID -y); then 
+				if (ffmpeg -ss $IN -t $LN -i $NAME -o "${ID}.mp4" -y); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID}"
 					((SEEN+=1))
 				else
