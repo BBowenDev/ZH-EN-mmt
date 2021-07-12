@@ -60,7 +60,7 @@ function download_select {
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
-				if (ffmpeg -ss $IN -t $DR -i $NAME -loglevel 8 -c:v copy -c:a copy -y $NAME); then 
+				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $NAME); then 
 					echo "FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					rm $NAME
 					((SEEN+=1))
