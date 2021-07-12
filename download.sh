@@ -66,23 +66,21 @@ function download_select {
 			
 			#if the download doesn't complete or an error is returned, skip and increment error count
 			if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
-				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID} 🆗"
+				echo "-----------------------------------YT-DL DOWNLOADED VIDEO ${ID} 🟦"
 
 				#trim and encode video clip
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
-				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
-				
-				if (ffmpeg -ss $IN -t $LN -i $NAME -c:v libx264 -c:a copy -y ${ID}.mp4); then 
-					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID} ✅"
+				if (ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy -y ${ID}.mp4); then 
+					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					((SEEN+=1))
 				else
 					((ERR+=1))
-					echo "-----------------------------------FFMPEG FAILED VIDEO ${ID} ❌"
+					echo "-----------------------------------FFMPEG FAILED VIDEO ${ID} 🟥"
 				fi	
 			else 
-				echo "-----------------------------------YT-DL FAILED VIDEO ${ID} ⚠"
+				echo "-----------------------------------YT-DL FAILED VIDEO ${ID} 🟨"
 				((ERR+=1))
 			fi
 					
