@@ -77,7 +77,8 @@ function download_select {
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
 				#ffmpeg -ss $IN -t $LN -i $NAME -c:v copy -c:a copy $NAME || true; FF_FAIL=true
-
+				
+				'''
 				if (ffmpeg -ss $IN -t $LN -i $NAME -c copy $ID -y); then 
 					echo "-----------------------------------FFMPEG TRIMMED VIDEO ${ID}"
 					((SEEN+=1))
@@ -88,6 +89,7 @@ function download_select {
 			else 
 				echo "-----------------------------------YT-DL FAILED VIDEO ${ID}"
 				((ERR+=1))
+				'''
 			fi
 					
 		done < $FILE
