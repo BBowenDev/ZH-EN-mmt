@@ -2,6 +2,7 @@ import argparse
 import json
 import jieba
 import nltk
+from datetime import datetime
 from nltk.tokenize import word_tokenize
 import os
 
@@ -52,9 +53,16 @@ for num, data_file in enumerate(jsons):
         #format video start and stop time for later ease
         vid = raw_dict["videoID"].split("_")
         v_in = iter(vid[1])
-        vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
         v_out = iter(vid[2])
+        vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
         vid[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
+        
+        
+        #calculate clip duration
+        v_in_time = datetime.strptime(vid[1], "%H:%M:%S")
+        v_out_time = datetime.strptime(vid[2], "%H:%M:%S")
+        vid.append(str(v_out_time - v_in_time))
+        
         vid = "_".join(vid)
 				
         #add video ID to later list
