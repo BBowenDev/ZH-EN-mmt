@@ -58,9 +58,10 @@ for num, data_file in enumerate(jsons):
 	
         v_in = iter(vid[1])
         v_out = iter(vid[2])
-        print(str(v_in), str(v_out))
         vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
         vid[2] = ':'.join(a+b for a,b in zip(v_out, v_out))
+        
+        print(vid)
         
         #calculate clip duration
         v_in_time = datetime.strptime(vid[1], "%H:%M:%S")
