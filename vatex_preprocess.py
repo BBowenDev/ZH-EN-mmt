@@ -54,7 +54,8 @@ for num, data_file in enumerate(jsons):
         vid = [""]
         vid[0] = raw_dict["videoID"][0:12]
         vid.append(raw_dict["videoID"][12:].split("_"))
-        
+        print(vid)
+	
         v_in = iter(vid[1])
         v_out = iter(vid[2])
         vid[1] = ':'.join(a+b for a,b in zip(v_in, v_in))
