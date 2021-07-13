@@ -228,7 +228,7 @@ function download_random {
 if [ -z $1 ]; then
 	download_all
 else
-	while test $# - gt 0; do
+	while [[ $# -gt 0 ]]; do
 		case "$1" in 
 			-h) #help and usage message 
 				show_help
