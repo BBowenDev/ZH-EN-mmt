@@ -169,7 +169,7 @@ function download_random {
 
 	while [[ $SEEN -lt $MAX ]]; do
 		#get random line from selected file
-		END=$(wc -l $RAW/$I_FILE | awk "{$1}")
+		END=$(cat $RAW/$I_FILE | wc -l)
 		echo "${END}"
 		RAND=$(shuf -i 0-$END -n 1)
 		LN=$(sed "${RAND}q;d" "${RAW}/${I_FILE}")
