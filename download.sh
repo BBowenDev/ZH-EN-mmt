@@ -169,12 +169,12 @@ function download_random {
 	#target output folder to storage
 	OUTDIR=$RAW/"${FILE}.vids"
 
-	#get random line from selected file
-	END=$(wc -l $RAW/"${I_FILE}")
-	RAND=$(shuf -i 0-$END -n 1)
-	LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
-	
 	while [[ $SEEN -lt $MAX ]]; do
+		#get random line from selected file
+		END=$(wc -l $RAW/"${I_FILE}")
+		RAND=$(shuf -i 0-$END -n 1)
+		LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
+		
 		#set the string delimiter to "_" to break up each line into an array
 		IFS="=" read -r -a ARR <<< $LN
 		
@@ -209,17 +209,10 @@ function download_random {
 				#remove unencoded file
 				rm $NAME
 				((SEEN+=1))
-			else 
-				rm $NAME
-				RAND=$(shuf -i 0-$END -n 1)
-				LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
+				echo "Downloaded Random Video ${NAME}"
 			fi
-		else
-			RAND=$(shuf -i 0-$END -n 1)
-			LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
 		fi
-	done
-	echo "Downloaded Random Video ${NAME}"
+	done	
 }
 
 #check positional arguments
