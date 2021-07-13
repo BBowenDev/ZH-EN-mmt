@@ -47,9 +47,6 @@ function download_all {
 			#set trimmed video download name
 			SVNAME=$OUTDIR/"${FILE}.${ID}.mp4"
 
-			#for every video, download from given time frame	
-			echo "Starting Download ${ID}: ${SEEN}/${MAX}"
-
 			#access and download whole video with youtube-dl
 			#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
 			#youtube-dl -q shows no output
@@ -89,7 +86,7 @@ function download_all {
 function download_select {
 	echo "Downloading ${1} videos from test set"
 	MAX=$1
-	SEEN=0
+	SEEN=1
 	ERR=0
 	I_FILE="test.ids"
 	FILE="${I_FILE}.sel"
@@ -190,9 +187,6 @@ function download_random {
 		NAME=$VIDS/"${FILE}.${ID}.mp4"
 		#set trimmed video download name
 		SVNAME=$OUTDIR/"${FILE}.${ID}.mp4"
-
-		#for every video, download from given time frame	
-		echo "Starting Download ${ID}: ${SEEN}/${MAX}"
 
 		#access and download whole video with youtube-dl
 		#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
