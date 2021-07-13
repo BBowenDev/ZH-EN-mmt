@@ -6,6 +6,8 @@ VIDS=$RAW/vids
 
 function show_help {
 	echo "Usage: download.sh -arg val"
+	echo "Usage: download.sh"
+	echo "--Use -a to fetch all available videos from each set (or use no arguments)"
 	echo "--Use -s <n> to fetch the first n available videos from the test set"
 	echo "--Use -r <train/val/test> to fetch a random available video from the selected set"
 	exit 0
