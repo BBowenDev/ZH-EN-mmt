@@ -152,7 +152,6 @@ function download_select {
 		echo "Seen a Maximum of ${SEEN} Lines"
 		echo "--Videos Downloaded to ${FILE}: ${SEEN}"
 		echo "--Videos Skipped in ${FILE}: ${ERR}"
-		exit 0
 	fi
 }
 
@@ -221,7 +220,6 @@ function download_random {
 		fi
 	done
 	echo "Downloaded Random Video ${NAME}"
-	exit 0
 }
 
 #check positional arguments
@@ -244,16 +242,19 @@ else
 					echo "Error in arg -s: <int> num videos r"
 					exit 0
 				fi
+				shift
 				;;
 			-r) #get random video from selected set
 				shift
 				if test $# -gt 0; then
 					if [[ $1 == *"train"* ]] || [[ $1 == *"val"* ]] || [[$1 == *"test"* ]]; then 
 						download_random $1
+						shift
 					else
 						echo "Error in arg -r: <train/val/test> set to fetch random video from"
 						exit 0
 					fi
+				
 				else 
 					echo "Error in arg -r: <train/val/test> set to fetch random video from"
 					exit 0
