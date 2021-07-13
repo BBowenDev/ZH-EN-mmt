@@ -68,7 +68,7 @@ function download_select {
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
 				if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
 					echo "FFMPEG TRIMMED VIDEO ${ID} 🟩"
-					#rm $NAME
+					rm $NAME
 					((SEEN+=1))
 				else
 					((ERR+=1))
