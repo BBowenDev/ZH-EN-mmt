@@ -37,7 +37,7 @@ function download_select {
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
 			
-			echo "💚💚💚💚💚💚 ARR: ${ARR}"
+			echo "💚💚💚💚💚💚 ARR: ${L}"
 			
 			#set video ID
 			ID=${ARR[0]}
