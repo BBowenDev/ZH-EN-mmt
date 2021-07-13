@@ -97,6 +97,7 @@ function download_select {
 	if [[ ! -d $RAW/"${FILE}.vids" ]]; then
 		mkdir $RAW/"${FILE}.vids"
 	fi
+	
 	#target output folder to storage
 	OUTDIR=$RAW/"${FILE}.vids"
 
@@ -147,7 +148,7 @@ function download_select {
 			((ERR+=1))
 		fi
 
-	done < $I_FILE
+	done < $RAW/"${I_FILE}"
 	if [[ $SEEN -gt $MAX ]]; then 
 		echo "Seen a Maximum of ${SEEN} Lines"
 		echo "--Videos Downloaded to ${FILE}: ${SEEN}"
