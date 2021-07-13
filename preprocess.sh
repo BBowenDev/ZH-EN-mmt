@@ -65,7 +65,7 @@ else
 	
 	while test $# -gt 0; do
 		case "$1" in 
-			-h)#help and ussage message
+			-h) #help and ussage message
 				show_help
 				;;
 			-m) #number of merges for BPE (required)
@@ -90,7 +90,7 @@ else
 				fi
 				shift
 				;;
-			*)#other args should be ignored  
+			*) #other args should be ignored  
 				echo "Error: unexpected arg ${1}"
 				show_help 
 				exit 0
