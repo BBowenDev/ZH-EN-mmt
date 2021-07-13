@@ -82,8 +82,8 @@ function download_select {
 		done < $F_FILE
 		if [[ $SEEN -gt $MAX ]]; then 
 			echo "Seen a Maximum of ${SEEN} Lines"
-			echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
-			echo "--Videos Skipped in ${F_FILE}: ${ERR}"
+			echo "--Videos Downloaded in ${FILE}: ${SEEN}"
+			echo "--Videos Skipped in ${FILE}: ${ERR}"
 			((SEEN_ALL+=SEEN))
 			((ERR_ALL+=ERR))
 			break
