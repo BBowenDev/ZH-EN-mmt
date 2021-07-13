@@ -35,7 +35,7 @@ function download_select {
 				break
 			fi 
 			
-			echo "💙💙💙💙💙💙 ARR before: {L}"
+			echo "💙💙💙💙💙💙 ARR before: ${L}"
 			
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
