@@ -238,15 +238,15 @@ else
 				shift
 				if test $# -gt 0; then 
 					download_select $1
+					shift
 				else 
 					echo "Error in arg -s: <int> num videos r"
 					exit 0
 				fi
-				shift
 				;;
 			-r) #get random video from selected set
 				shift
-				if test $# -gt 0; then
+				if [[ $# -gt 0 ]]; then
 					if [[ $1 == *"train"* ]] || [[ $1 == *"val"* ]] || [[$1 == *"test"* ]]; then 
 						download_random $1
 						shift
