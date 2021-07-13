@@ -35,12 +35,8 @@ function download_select {
 				break
 			fi 
 			
-			echo "💙💙💙💙💙💙 ARR before: ${L}"
-			
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
-			
-			echo "💚💚💚💚💚💚 ARR: ${L}"
 			
 			#set video ID
 			ID=${ARR[0]}
@@ -86,14 +82,12 @@ function download_select {
 		done < $F_FILE
 		if [[ $SEEN -gt $MAX ]]; then 
 			echo "Seen a Maximum of ${SEEN} Lines"
+			echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
+			echo "--Videos Skipped in ${F_FILE}: ${ERR}"
+			((SEEN_ALL+=SEEN))
+			((ERR_ALL+=ERR))
 			break
-			fi 
-		
-		echo "--Videos Downloaded in ${F_FILE}: ${SEEN}"
-		echo "--Videos Skipped in ${F_FILE}: ${ERR}"
-		((SEEN_ALL+=SEEN))
-		((ERR_ALL+=ERR))
-		
+			fi
 	done
 	echo ""
 	echo "--Total Videos Downloaded: ${SEEN_ALL}"
