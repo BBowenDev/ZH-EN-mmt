@@ -34,6 +34,9 @@ function download_select {
 			if [[ $SEEN -gt $MAX ]]; then 
 				break
 			fi 
+			
+			echo "`💙💙💙💙💙💙 ARR before: {L}"
+			
 			#set the string delimiter to "_" to break up each line into an array
 			IFS="=" read -r -a ARR <<< $L
 			
