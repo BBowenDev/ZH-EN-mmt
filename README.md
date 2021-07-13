@@ -11,23 +11,35 @@ git clone https://github.com/BraedenLB/ZH-EN-mmt.git
 ## Using a Pretrained Model
 By default, this model functions on pretrained VaTeX video features and preprocessed caption data. Using the `-p` flag in the [`prepare.sh`](prepare.sh) script will format the model to utilize pretrained features and preprocessed dictionaries. Depending on shell permissions, the script may need to be elevated with `chmod 755`.
 
+
+### Quick Build
+
+
+
+### In-Depth Build
+
 ```
 cd ZH-EN-mmt
 #chmod 755 prepare.sh
 bash prepare.sh -p
 ```
-### Hyperparameters
-Each script contains a number of variables to be used for hyperparamaterization and performance improvement.
-|**Hyperparameter**|**Location**|**Default Value**|
-|----|----|----|
-||||
-
 
 ## Training a New Model
 **_NOTE_**: new model training does not currently work, but will be patched in forthcoming builds.
 
+### Quick Train
+
+
+### In-Depth Train
+
+
 
 A new model can be trained using the `-n` flag in the [`prepare.sh`](prepare.sh) script.
+
+
+
+
+
 
 
 ```
@@ -35,6 +47,9 @@ cd ZH-EN-mmt
 #chmod 755 prepare.sh
 bash prepare.sh -n
 ```
+
+## Downloading The Dataset
+
 
 
 ### Preprocessing
