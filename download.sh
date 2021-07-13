@@ -235,7 +235,7 @@ else
 				;;
 			-a) # download all videos
 				download_all
-				
+				;;
 			-s) #select the first n available videos from the test set
 				shift
 				if test $# -gt 0; then 
