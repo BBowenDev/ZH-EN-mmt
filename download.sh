@@ -209,6 +209,7 @@ function download_random {
 				rm $NAME
 				((SEEN+=1))
 			else 
+				rm $NAME
 				RAND=$(shuf -i 0-$END -n 1)
 				LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
 			fi
