@@ -66,10 +66,11 @@ function download_select {
 				echo "YT-DL DOWNLOADED VIDEO ${ID} 🟦"
 
 				#trim and encode video clip
+				#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 				#ffmpeg -loglevel 8 only shows errors that break the download process
 				
 				#if the encoding doesn't complete or an error is returned, skip and increment error count
-				if (ffmpeg -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
+				if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
 					echo "FFMPEG TRIMMED VIDEO ${ID} 🟩"
 					#rm $NAME
 					((SEEN+=1))
