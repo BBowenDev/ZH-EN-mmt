@@ -169,10 +169,10 @@ function download_random {
 
 	while [[ $SEEN -lt $MAX ]]; do
 		#get random line from selected file
-		END=$(wc -l $RAW/"${I_FILE}")
+		END=$(wc -l "${RAW}/${I_FILE}")
 		echo "${END}"
 		RAND=$(shuf -i 0-$END -n 1)
-		LN=$(sed "${RAND}q;d" $RAW/"${I_FILE}")
+		LN=$(sed "${RAND}q;d" "${RAW}/${I_FILE}")
 		
 		#set the string delimiter to "_" to break up each line into an array
 		IFS="=" read -r -a ARR <<< $LN
