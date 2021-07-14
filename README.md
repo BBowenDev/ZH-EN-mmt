@@ -14,6 +14,13 @@ By default, this model functions on pretrained VaTeX video features and preproce
 
 ### Quick Build
 
+```
+cd ZH-EN-mmt
+git clone https://github.com/BraedenLB/ZH-EN-mmt.git
+prepare.sh -p
+preprocess.sh -m 10000 -t 1000
+
+```
 
 
 ### In-Depth Build
@@ -28,6 +35,14 @@ bash prepare.sh -p
 **_NOTE_**: new model training does not currently work, but will be patched in forthcoming builds.
 
 ### Quick Train
+
+```
+cd ZH-EN-mmt
+git clone https://github.com/BraedenLB/ZH-EN-mmt.git
+prepare.sh -p
+preprocess.sh -m 10000 -t 1000
+download.sh -a
+```
 
 
 ### In-Depth Train
