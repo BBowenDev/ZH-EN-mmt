@@ -81,15 +81,15 @@ function prep_pretrain {
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
-	wget "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
+	curl -O "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
 	mv dict.* $VATEX/vocab
 	mv *.code $VATEX/bpe
 	mv bpecodes $VATEX/bpe
 	mv model.pt $FV/models
 
 	echo "Fetching Pretrained Features"
-	wget "https://vatex-feats.s3.amazonaws.com/trainval.zip" -P $FEATS &
-	wget "https://vatex-feats.s3.amazonaws.com/public_test.zip" -P $FEATS &
+	curl -O $FEATS "https://vatex-feats.s3.amazonaws.com/trainval.zip" &
+	curl -P $FEATS "https://vatex-feats.s3.amazonaws.com/public_test.zip" &
 	wait
 }
 
@@ -111,8 +111,8 @@ function prep_new {
 	
 	#get raw captions
 	echo "Fetching Datasets"
-	wget "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" -P $RAW &
-	wget "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" -P $RAW &
+	curl -O $RAW "https://eric-xw.github.io/vatex-website/data/vatex_training_v1.0.json" &
+	wget -O $RAW "https://eric-xw.github.io/vatex-website/data/vatex_validation_v1.0.json" &
 	wait
 }
 
