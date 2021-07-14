@@ -64,6 +64,7 @@ function download_all {
 					#remove unencoded file
 					rm $NAME
 					((SEEN+=1))
+					echo "Downloaded Video ${NAME}"
 				else
 					((ERR+=1))
 				fi	
