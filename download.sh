@@ -64,7 +64,7 @@ function download_all {
 					#remove unencoded file
 					rm $NAME
 					((SEEN+=1))
-					echo "Downloaded Video ${NAME}"
+					echo "${SEEN}: Downloaded Video ${SVNAME}"
 				else
 					((ERR+=1))
 				fi	
@@ -128,14 +128,14 @@ function download_select {
 		#youtube-dl -q shows no output
 
 		#if the download doesn't complete or an error is returned, skip and increment error count
-		if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
+		if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o "${NAME}"); then
 
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
 
 			#if the encoding doesn't complete or an error is returned, skip and increment error count
-			if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
+			if (ffmpeg -nostdin -loglevel 8 -ss "${IN}" -t "${DR}" -i "${NAME}" -c:v copy -c:a copy -y "${SVNAME}"); then 
 				#remove unencoded file
 				rm $NAME
 				((SEEN+=1))
@@ -194,14 +194,14 @@ function download_random {
 		#youtube-dl -q shows no output
 
 		#if the download doesn't complete or an error is returned, skip and increment error count
-		if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o $NAME); then
+		if (youtube-dl "${ID}" -q -f mp4/bestvideo --external-downloader ffmpeg -o "${NAME}"); then
 
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
 
 			#if the encoding doesn't complete or an error is returned, skip and increment error count
-			if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then 
+			if (ffmpeg -nostdin -loglevel 8 -ss "${IN}" -t "${DR}" -i "${NAME}" -c:v copy -c:a copy -y "${SVNAME}"); then 
 				#remove unencoded file
 				rm $NAME
 				((SEEN+=1))
