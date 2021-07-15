@@ -65,6 +65,17 @@ bash prepare.sh -n
 
 ## Downloading The Dataset
 
+The `download.sh` script downloads raw video and audio files from YouTube with [youtube-dl](https://github.com/ytdl-org/youtube-dl) and encodes and trims them with [ffmpeg](https://ffmpeg.org/ffmpeg.html#Synopsis) using Alexander Refsum Jensenius's [method](https://www.arj.no/2018/05/18/trimvideo/). Video IDs and clip durations are formatted from the raw dataset with the `vatex_preprocess.py` script. The `download.sh` script contains a number of flags and arguments: 
+* `-a` _(or no flags)_ | downloads all available videos
+* `-s` _n_ | fetches the first _n_ available videos from the test set built with `vatex_preprocess.py`
+* `-r` _set_ | fetches the first available video from _set_ specified set (train/val/test)
+* `-h` | show above usage information
+
+```
+cd ZH-EN-mmt
+#chmod 755 prepare.sh
+bash download.sh -a
+```
 
 
 ### Preprocessing
