@@ -107,6 +107,7 @@ function prep_new {
 	pip install jieba &
 	pip install youtube-dl &
 	pip install ffmpeg &
+	apt-get install ffmpeg &
 	wait
 	
 	#get raw captions
