@@ -6,20 +6,10 @@ import datetime
 from nltk.tokenize import word_tokenize
 import os
 
-'''
-#data structure
-formatted = {
-    "ID1": {"en": ["cap1", "cap2"],
-           "zh": ["cap1", "cap2"], }
-    "ID2": {}...
-    }
-'''
 
-#raw_path = str(os.path.abspath("../raw/") + "/")
-raw_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/raw/"
+raw_path = str(os.path.abspath("../raw/") + "/")
 
-#tok_path = str(os.path.abspath("../tok/") + "/")
-tok_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/tok/"
+tok_path = str(os.path.abspath("../tok/") + "/")
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
 out_files = ["train", "val", "test"]
