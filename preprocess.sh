@@ -28,39 +28,39 @@ function proc {
 	cd $VT/scripts
 	if [[ $PRETRAIN = true ]]; then
 		python3 vatex_preprocess.py -f $FULL -t $T -p
+		#10,000 merge operations are used (can be hyperparamaterized)
+		#learning and applying bpe are broken up so they can be parallelized
+		cd $SWNMT
+		echo "Learning BPE:"
+		for TYPE in "train" "val" "test"; do
+			for LANG in "en" "zh"; do 
+				INPUT="${TOK}/${TYPE}_tok.${LANG}"
+				OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
+				CODES="${TOK}/codes_${LANG}.bpe"
+				VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
+
+				echo "--${TYPE}-${LANG}"
+				python3 $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
+			done
+		done
+
+		#once all BPE has been learned, it is applied
+		echo "Applying BPE:"
+		for TYPE in "train" "val" "test"; do
+			for LANG in "en" "zh"; do 
+				INPUT="${TOK}/${TYPE}_tok.${LANG}"
+				OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
+				CODES="${TOK}/codes_${LANG}.bpe"
+				VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
+
+				echo "--${TYPE}-${LANG}"
+				python3 $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
+			done
+		done
 	else 
+		#if a new model is being created, preprocess data for downloading
 		python3 vatex_preprocess.py -f $FULL -t $T
 	fi
-	
-	#10,000 merge operations are used (can be hyperparamaterized)
-	#learning and applying bpe are broken up so they can be parallelized
-	cd $SWNMT
-	echo "Learning BPE:"
-	for TYPE in "train" "val" "test"; do
-		for LANG in "en" "zh"; do 
-			INPUT="${TOK}/${TYPE}_tok.${LANG}"
-			OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
-			CODES="${TOK}/codes_${LANG}.bpe"
-			VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
-
-			echo "--${TYPE}-${LANG}"
-			python3 $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
-		done
-	done
-
-	#once all BPE has been learned, it is applied
-	echo "Applying BPE:"
-	for TYPE in "train" "val" "test"; do
-		for LANG in "en" "zh"; do 
-			INPUT="${TOK}/${TYPE}_tok.${LANG}"
-			OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
-			CODES="${TOK}/codes_${LANG}.bpe"
-			VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
-
-			echo "--${TYPE}-${LANG}"
-			python3 $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
-		done
-	done
 }
 
 #check positional arguments
