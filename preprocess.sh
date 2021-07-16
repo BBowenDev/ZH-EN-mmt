@@ -1,12 +1,15 @@
 #!/bin/bash
 FV=$(pwd)
 
+PRETRAIN=false
+FULL=false
 MERGES=0
 T=0
 
 function show_help {
 	echo "Usage: preprocess.sh -arg val -arg val"
 	echo "Required arguments: -m <int> -t <int>"
+	echo "--Use -p if a pretrained video features model is being used"
 	echo "--Use -m to specify the number of merges used in BPE encoding (default 10000)"
 	echo "--Use -t to specify the size of the created test set (default 1000 videos)"
 	exit 0
@@ -23,8 +26,12 @@ function proc {
 	#run preprocessing script on raw captions, tokenizing and saving to new files
 	echo "Tokenizing dataset"
 	cd $VT/scripts
-	python vatex_preprocess.py -f True -t $T
-
+	if [[ $PRETRAIN = true ]]; then
+		python3 vatex_preprocess.py -f $FULL -t $T -p
+	else 
+		python3 vatex_preprocess.py -f $FULL -t $T
+	fi
+	
 	#10,000 merge operations are used (can be hyperparamaterized)
 	#learning and applying bpe are broken up so they can be parallelized
 	cd $SWNMT
@@ -37,7 +44,7 @@ function proc {
 			VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
 
 			echo "--${TYPE}-${LANG}"
-			python $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
+			python3 $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
 		done
 	done
 
@@ -51,7 +58,7 @@ function proc {
 			VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
 
 			echo "--${TYPE}-${LANG}"
-			python $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
+			python3 $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
 		done
 	done
 }
@@ -68,7 +75,7 @@ else
 			-h) #help and ussage message
 				show_help
 				;;
-			-m) #number of merges for BPE (required)
+			-m) #number of merges for BPE
 				shift
 				if test $# -gt 0; then
 					MERGES=${1}
@@ -79,7 +86,7 @@ else
 				fi
 				shift
 				;;
-			-t) #number of videos in the created test set (required)
+			-t) #number of videos in the created test set
 				shift
 				if test $# -gt 0; then
 					T=${1}
@@ -89,6 +96,14 @@ else
 					exit 0
 				fi
 				shift
+				;;
+			-f) #boolean if full model caption capacity is to be used 
+				shift
+				FULL=true
+				;;
+			-p) #boolean if pretrained model is used
+				shift
+				PRETRAIN=true
 				;;
 			*) #other args should be ignored  
 				echo "Error: unexpected arg ${1}"
