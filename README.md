@@ -3,6 +3,24 @@ A multimodal machine translation model from Simplified Chinese (ZH) to English (
 
 ## Installation
 
+The model will install the necessary prerequisites, but requires:
+* Python >= 3.6
+* [CUDA](https://developer.nvidia.com/cuda-10.2-download-archive) 10.2
+* [wget](https://www.gnu.org/software/wget/)
+* [fairseq](https://github.com/pytorch/fairseq)
+* [NVIDA apex](https://github.com/NVIDIA/apex)
+* [nltk](https://www.nltk.org/index.html)
+* [punkt](https://github.com/nltk/nltk/blob/develop/nltk/tokenize/punkt.py)
+* [sacremoses](https://github.com/alvations/sacremoses)
+* [jieba](https://github.com/fxsjy/jieba)
+* [subword-nmt](https://github.com/rsennrich/subword-nmt)
+* [youtube-dl](https://github.com/ytdl-org/youtube-dl)
+* [ffmpeg](https://ffmpeg.org/ffmpeg.html#Synopsis)
+* []()
+* []()
+
+
+
 ```
 git clone https://github.com/BraedenLB/ZH-EN-mmt.git
 ```
@@ -71,11 +89,16 @@ The `download.sh` script downloads raw video and audio files from YouTube with [
 * `-r` _set_ | fetches the first available video from _set_ specified set (train/val/test)
 * `-h` | show above usage information
 
+Downloads from the `-s` and `-r` flags will be placed in marked subfolders to prevent errors with downloading the whole dataset.
+
+
 ```
 cd ZH-EN-mmt
 #chmod 755 prepare.sh
 bash download.sh -a
 ```
+
+_**NOTE:**_ as the VaTeX dataset is sourced from YouTube, not all videos will still be available or accessible.
 
 
 ### Preprocessing
