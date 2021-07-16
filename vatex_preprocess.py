@@ -6,24 +6,16 @@ import datetime
 from nltk.tokenize import word_tokenize
 import os
 
-parser = argparse.ArgumentParser(description="A preprocessing script to tokenize the VaTeX dataset.")
-parser.add_argument("-f", "--full", dest="full", default=False, 
-                    help="True if using the full dataset | False if only using parallel translations")
-parser.add_argument("-t", "--test_size", dest="test_size", type=int, default=1000, 
-                    help="Number of videos removed from the train/val sets to create test set. | default 1000 | minimum 1 | maximum 5999")
-args = parser.parse_args()
-args.full = bool(args.full)
-args.test_size = int(args.test_size)
-
-if args.test_size > 5999 or args.test_size < 1:
-    raise argparse.ArgumentError("Maximum test size of 5,999 videos")
-    quit()
-
-#if nltk has never been used, run line:
-nltk.download("punkt")
+'''
+#data structure
+formatted = {
+    "ID1": {"en": ["cap1", "cap2"],
+           "zh": ["cap1", "cap2"], }
+    "ID2": {}...
+    }
+'''
 
 raw_path = str(os.path.abspath("../raw/") + "/")
-print(raw_path)
 tok_path = str(os.path.abspath("../tok/") + "/")
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
@@ -34,52 +26,203 @@ langs = ["en", "zh"]
 formatted = {}
 ids = {}
 
-#format video ids container
-for file in out_files:
-    ids[file] = []
+def get_timestamp(raw_dict):
+    vid = [""]
+    vid[0] = raw_dict["videoID"][0:11]
+    vidID = vid[0]
+    vid += raw_dict["videoID"][12:].split("_")
+    
+    vid[1] = datetime.timedelta(seconds = int(vid[1]))
+    vid[2] = datetime.timedelta(seconds = int(vid[2]))
+    
+    #calculate clip duration
+    vid[2] = (str(vid[2] - vid[1]))
+    vid[1] = str(vid[1])
 
-print("Reading:")
-for num, data_file in enumerate(jsons):        
-    with open(raw_path + data_file + ".json") as f:
-        print(data_file + ".json" + " opening")
-        data = json.load(f)
-    
-    data_type = out_files[jsons.index(data_file)]
-    
-    vtx_dict = {"en": [], "zh": []}
-    
-    print("--", data_file)
-    for raw_dict in data:
-        #format video start and stop time for later ease
-        vid = [""]
-        vid[0] = raw_dict["videoID"][0:11]
-        vid += raw_dict["videoID"][12:].split("_")
-        
-        vid[1] = datetime.timedelta(seconds = int(vid[1]))
-        vid[2] = datetime.timedelta(seconds = int(vid[2]))
-        
-        #calculate clip duration
-        vid[2] = (str(vid[2] - vid[1]))
-        vid[1] = str(vid[1])
-        
-        vid = "=".join(vid)
-				
-        #add video ID to later list
-        ids[data_type].append(vid)
-        
-        if "enCap" in raw_dict.keys():
-            if args.full is True: #if using the full dataset, don't truncate
-                vtx_dict["en"] += raw_dict["enCap"]
-            else: #otherwise, truncate dataset to parallel captions only
-                vtx_dict["en"] += raw_dict["enCap"][-5:]
-        
-        if "chCap" in raw_dict.keys():
-            if args.full is True: #if using the full dataset, don't truncate
-                vtx_dict["zh"] += raw_dict["chCap"]
-            else: #otherwise, truncate dataset to parallel captions only
-                vtx_dict["zh"] += raw_dict["chCap"][-5:]
+    vid = "=".join(vid)
+    return vidID, vid
+
+def parse_new():
+    print("Extracting Video IDs:")
+    for num, data_file in enumerate(jsons):
+        with open(raw_path + data_file + ".json") as f:
+            print("Opening", data_file + ".json")
+            data = json.load(f)
+            
+            data_type = out_files[jsons.index(data_file)]
+            ids[data_type] = []       
+            
+            vtx_dict = {}
+            
+            print("--", data_file)
+            for raw_dict in data:
+                #format video start and stop time for later use
+                vidID, vid = get_timestamp(raw_dict)
                 
-    formatted[out_files[num]] = vtx_dict
+                #save videoID as key for captions
+                vtx_dict[vidID] = {"en":[], "zh":[]}
+                
+                
+                ids[data_type].append(vid)
+                
+                if "enCap" in raw_dict.keys():
+                    if args.full is True: #if using the full dataset, don't truncate
+                        vtx_dict[vidID]["en"] += raw_dict["enCap"]
+                    else: #otherwise, truncate dataset to parallel captions only
+                        vtx_dict[vidID]["en"] += raw_dict["enCap"][-5:]
+                
+                if "chCap" in raw_dict.keys():
+                    if args.full is True: #if using the full dataset, don't truncate
+                        vtx_dict[vidID]["zh"] += raw_dict["chCap"]
+                    else: #otherwise, truncate dataset to parallel captions only
+                        vtx_dict[vidID]["zh"] += raw_dict["chCap"][-5:]
+                    
+        formatted[data_type] = vtx_dict
+
+def parse_preprocessed(): 
+    #format video ids container
+    for file in out_files:
+        ids[file] = []
+    
+    print("Reading:")
+    for num, data_file in enumerate(jsons):        
+        with open(raw_path + data_file + ".json") as f:
+            print(data_file + ".json" + " opening")
+            data = json.load(f)
+        
+        data_type = out_files[jsons.index(data_file)]
+        
+        vtx_dict = {"en": [], "zh": []}
+        
+        print("--", data_file)
+        for raw_dict in data:
+            #format video start and stop time for later ease
+            vid = [""]
+            vid[0] = raw_dict["videoID"][0:11]
+            vid += raw_dict["videoID"][12:].split("_")
+            
+            vid[1] = datetime.timedelta(seconds = int(vid[1]))
+            vid[2] = datetime.timedelta(seconds = int(vid[2]))
+            
+            #calculate clip duration
+            vid[2] = (str(vid[2] - vid[1]))
+            vid[1] = str(vid[1])
+            
+            vid = "=".join(vid)
+    				
+            #add video ID to later list
+            ids[data_type].append(vid)
+            
+            if "enCap" in raw_dict.keys():
+                if args.full is True: #if using the full dataset, don't truncate
+                    vtx_dict["en"] += raw_dict["enCap"]
+                else: #otherwise, truncate dataset to parallel captions only
+                    vtx_dict["en"] += raw_dict["enCap"][-5:]
+            
+            if "chCap" in raw_dict.keys():
+                if args.full is True: #if using the full dataset, don't truncate
+                    vtx_dict["zh"] += raw_dict["chCap"]
+                else: #otherwise, truncate dataset to parallel captions only
+                    vtx_dict["zh"] += raw_dict["chCap"][-5:]
+                    
+        formatted[out_files[num]] = vtx_dict
+    
+    #create small test set from val and train set
+    if args.full is True:
+        caps_half = int((args.test_size*10)/2)
+    else:
+        caps_half = int((args.test_size*5)/2)
+    ids_half = int(args.test_size/2)
+    
+    #create for captions
+    formatted["test"] = {"en": [], "zh": []}
+    formatted["test"]["en"] = formatted["val"]["en"][-caps_half:]
+    formatted["test"]["zh"] = formatted["val"]["zh"][-caps_half:]
+    formatted["test"]["en"].extend(formatted["test"]["en"][-caps_half:])
+    formatted["test"]["zh"].extend(formatted["test"]["zh"][-caps_half:])
+    
+    #create for video ids
+    ids["test"] = ids["val"][-ids_half:]
+    ids["test"].extend(ids["test"][-ids_half:])
+    
+    #remove newly duplicated captions from original locations
+    del formatted["val"]["en"][-caps_half:]
+    del formatted["val"]["zh"][-caps_half:]
+    del formatted["train"]["en"][-caps_half:]
+    del formatted["train"]["zh"][-caps_half:]
+    
+    #remove newly duplicated video ids from original locations
+    del ids["val"][-ids_half:]
+    del ids["train"][-ids_half:]
+    
+    #tokenize, remove cases, and save to /tok directory
+    print("Tokenizing:")
+    jieba.initialize()
+    jieba.setLogLevel(20)
+    
+    for file in out_files:
+        for lang in langs:
+                #output captions to file
+                with open(tok_path + file + "_tok" + "." + lang, "w", encoding="utf-8") as f:
+                    print("--", file + "." + lang)
+                    
+                    if lang == "en":       
+                        for line in formatted[file][lang]:
+                            words = word_tokenize(line.lower()) #tokenize English with nltk
+                            words = " ".join(words)
+                            f.write(words + "\n") 
+                    
+                    elif lang == "zh":
+                        for line in formatted[file][lang]:
+                            words = jieba.lcut(line, cut_all=True) #tokenize Chinese with jieba
+                            words = " ".join(words)
+                            f.write(words + "\n")
+        
+        #output video ids to file
+        with open(raw_path + file + ".ids", "w", encoding="utf-8") as l:
+            print("--", file + ".ids")
+            for line in ids[file]:
+                l.write(line + "\n")
+
+
+parser = argparse.ArgumentParser(description="A preprocessing script to tokenize the VaTeX dataset.")
+parser.add_argument("-f", "--full", dest="full", default=False, 
+                    help="True if using the full dataset | False if only using parallel translations")
+parser.add_argument("-p", "--pretrain", dest="pretrain", default=False,
+                    help="True if using a pretrained model | False if building a new model")
+parser.add_argument("-t", "--test_size", dest="test_size", type=int, default=1000, 
+                    help="Number of videos removed from the train/val sets to create test set. | default 1000 | minimum 1 | maximum 5999")
+
+args = parser.parse_args()
+args.full = bool(args.full)
+args.pretrain = bool(args.pretrain)
+args.test_size = int(args.test_size)
+
+if args.test_size > 5999 or args.test_size < 1:
+    raise argparse.ArgumentError("Maximum test size of 5,999 videos")
+    quit()
+
+#if nltk has never been used, run line:
+nltk.download("punkt")
+
+#if pretrain option is selected, process all data
+if args.pretrain is True:
+    parse_preprocessed()
+else:
+    parse_new()
+
+
+
+ 
+
+
+
+
+
+
+
+
+
 
 #create small test set from val and train set
 if args.full is True:
