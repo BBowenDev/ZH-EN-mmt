@@ -107,6 +107,9 @@ function prep_new {
 	pip install jieba &
 	pip install youtube-dl &
 	pip install ffmpeg &
+	wait
+	
+	youtube-dl -U &
 	apt-get install ffmpeg &
 	wait
 	
