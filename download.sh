@@ -56,6 +56,7 @@ function download {
 				#remove unencoded file
 				rm $NAME
 				return 1
+			fi
 		else
 			return 1
 	fi
