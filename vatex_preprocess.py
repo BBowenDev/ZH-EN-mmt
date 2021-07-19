@@ -6,10 +6,20 @@ import datetime
 from nltk.tokenize import word_tokenize
 import os
 
+'''
+#data structure
+formatted = {
+    "ID1": {"en": ["cap1", "cap2"...],
+           "zh": ["cap1", "cap2"...], }
+    "ID2": {}...
+    }
+'''
 
-raw_path = str(os.path.abspath("../raw/") + "/")
+#raw_path = str(os.path.abspath("../raw/") + "/")
+raw_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/raw/"
 
-tok_path = str(os.path.abspath("../tok/") + "/")
+#tok_path = str(os.path.abspath("../tok/") + "/")
+tok_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/tok/"
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
 out_files = ["train", "val", "test"]
@@ -43,7 +53,6 @@ nltk.download("punkt")
 def get_timestamp(raw_dict):
     vid = [""]
     vid[0] = raw_dict["videoID"][0:11]
-    vidID = vid[0]
     vid += raw_dict["videoID"][12:].split("_")
     
     vid[1] = datetime.timedelta(seconds = int(vid[1]))
@@ -54,7 +63,8 @@ def get_timestamp(raw_dict):
     vid[1] = str(vid[1])
 
     vid = "=".join(vid)
-    return vidID, vid
+    
+    return vid
 
 def parse_new():
     print("Reading:")
@@ -64,35 +74,34 @@ def parse_new():
             
             data_type = out_files[jsons.index(data_file)]
             ids[data_type] = []       
-            
             vtx_dict = {}
             
             print("--", data_file)
             for raw_dict in data:
                 #format video start and stop time for later use
-                vidID, vid = get_timestamp(raw_dict)
+                vid = get_timestamp(raw_dict)
                 
                 #save videoID as key for captions
-                vtx_dict[vidID] = {"en":[], "zh":[]}
+                vtx_dict[vid] = {"en":[], "zh":[]}
                 ids[data_type].append(vid)
                 
                 if "enCap" in raw_dict.keys():
                     if args.full is True: #if using the full dataset, don't truncate
-                        vtx_dict[vidID]["en"] += raw_dict["enCap"]
+                        vtx_dict[vid]["en"] += raw_dict["enCap"]
                     else: #otherwise, truncate dataset to parallel captions only
-                        vtx_dict[vidID]["en"] += raw_dict["enCap"][-5:]
+                        vtx_dict[vid]["en"] += raw_dict["enCap"][-5:]
                 
                 if "chCap" in raw_dict.keys():
                     if args.full is True: #if using the full dataset, don't truncate
-                        vtx_dict[vidID]["zh"] += raw_dict["chCap"]
+                        vtx_dict[vid]["zh"] += raw_dict["chCap"]
                     else: #otherwise, truncate dataset to parallel captions only
-                        vtx_dict[vidID]["zh"] += raw_dict["chCap"][-5:]
+                        vtx_dict[vid]["zh"] += raw_dict["chCap"][-5:]
                     
-        formatted[data_type] = vtx_dict
-        
+            formatted[data_type] = vtx_dict
+
     #create small test set from val and train set
     ids_half = int(args.test_size/2)
-    
+
     #create for captions and ids
     formatted["test"] = {}
     ids["test"] = []
@@ -101,15 +110,15 @@ def parse_new():
     for num, i in enumerate(formatted["train"]):
         if num < ids_half:
             formatted["test"][i] = formatted["train"][i]
-    
+        
     num = 0
     fmt = {}
     for i in formatted["train"]:
-        if num > ids_half:
+        if num >= ids_half:
             fmt[i] = formatted["train"][i]
         num += 1
     formatted["train"] = fmt
-        
+   
     #move n/2 clip durations from train ids to test ids
     ids["test"] += ids["train"][:ids_half]
     ids["train"] = ids["train"][ids_half:]
@@ -118,25 +127,25 @@ def parse_new():
     fmt = formatted["val"]
     for num, i in enumerate(fmt):
         if num < ids_half:
-            formatted["test"][i] = formatted["val"][i]
-            
+            formatted["test"][i] = formatted["val"][i]     
+    
     num = 0
     fmt = {}
     for i in formatted["val"]:
-        if num > ids_half:
+        if num >= ids_half:
             fmt[i] = formatted["val"][i]
         num += 1
     formatted["val"] = fmt
 
     #move n/2 clip durations from val ids to test ids
     ids["test"] += ids["val"][:ids_half]
-    ids["train"] = ids["val"][ids_half:]
+    ids["val"] = ids["val"][ids_half:]
     
     #output video ids and clip durations
     print("Writing:")
     for file in out_files:
         #output captions to json for access through `learn_bpe.py` script
-        with open(raw_path + file + "_cap" + ".json", "w", encoding="utf-8") as f:
+        with open(raw_path + file + ".cap" + ".json", "w", encoding="utf-8") as f:
             print("--", file + ".json")
             json.dump(formatted[file], f)
             
@@ -145,8 +154,7 @@ def parse_new():
             print("--", file + ".ids")
             for line in ids[file]:
                 l.write(line + "\n")
-
-                
+         
 #if a preprocessed model is used, tokenize and BPE encode all captions
 def parse_preprocessed(): 
     print("Reading:")
