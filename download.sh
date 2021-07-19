@@ -15,7 +15,7 @@ function show_help {
 }
 
 #performs the download, trim, and encode function for all iterations of download.sh
-function download {
+function download_vid {
 	FILE=$1
 	OUTDIR=$2
 	L=$3
@@ -59,6 +59,7 @@ function download {
 			fi
 		else
 			return 1
+		fi
 	fi
 }
 
@@ -81,7 +82,7 @@ function download_all {
 		OUTDIR=$RAW/"${FILE}.vids"
 		
 		while read -r L; do
-			if [[ download $FILE $OUTDIR $L ]]; then 
+			if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
 				((SEEN+=1))
 				echo "Downloaded Video ${SEEN} at ${OUTDIR}"
 			else 
@@ -121,7 +122,7 @@ function download_select {
 			break
 		fi 
 
-		if [[ download $FILE $OUTDIR $L ]]; then 
+		if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
 			((SEEN+=1))
 			echo "${SEEN}/${MAX}: Downloaded Video ${SVNAME}"
 		else 
@@ -148,7 +149,7 @@ function download_set {
 	OUTDIR=$RAW/"${FILE}.vids"
 
 	while read -r L; do
-		if [[ download $FILE $OUTDIR $L ]]; then 
+		if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
 			((SEEN+=1))
 			echo "Downloaded Random Video at ${OUTDIR}"
 		fi
@@ -175,7 +176,7 @@ function download_random {
 		RAND=$(shuf -i 0-$END -n 1)
 		LN=$(sed "${RAND}q;d" "${RAW}/${I_FILE}")
 		
-		if [[ download $FILE $OUTDIR $LN ]]; then 
+		if [[ download_vid "$FILE" "$OUTDIR" "$LN" ]]; then 
 			((SEEN+=1))
 			echo "Downloaded Video at ${OUTDIR}"
 		fi
