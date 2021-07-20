@@ -18,7 +18,7 @@ function show_help {
 function python_tokenize {
 	if [[ $PRETRAIN = false ]]; then
 	#remove vids directory
-	rm -R vids
+	rm -R $RAW/vids
 
 	#tokenize data
 	python3 $VT/scripts/vatex_tokenize.py
