@@ -3,11 +3,8 @@ import jieba
 from nltk.tokenize import word_tokenize
 import os
 
-#raw_path = str(os.path.abspath("../raw/") + "/")
-raw_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/raw/"
-
-#tok_path = str(os.path.abspath("../tok/") + "/")
-tok_path = "C:/Users/bowen/OneDrive/Desktop/ZH-EN-mmt/tok/"
+raw_path = str(os.path.abspath("../raw/") + "/")
+tok_path = str(os.path.abspath("../tok/") + "/")
 
 out_files = ["train", "val", "test"]
 langs = ["en", "zh"]
