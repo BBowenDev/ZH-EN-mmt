@@ -110,7 +110,7 @@ function prep_new {
 	pip install ffmpeg &
 	wait
 	
-	youtube-dl -U &
+	pip install --upgrade youtube-dl &
 	apt-get install ffmpeg &
 	wait
 	
