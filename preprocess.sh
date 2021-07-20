@@ -8,7 +8,7 @@ T=0
 
 function show_help {
 	echo "Usage: preprocess.sh -arg val -arg val"
-	echo "Required arguments: -m <int> -t <int>"
+	echo "Use no arguments for default values"
 	echo "--Use -p if a pretrained video features model is being used"
 	echo "--Use -m to specify the number of merges used in BPE encoding (default 10000)"
 	echo "--Use -t to specify the size of the created test set (default 1000 videos)"
@@ -23,43 +23,14 @@ function proc {
 	BPE=$VT/bpe
 	VOC=$VT/vocab
 	
-	#run preprocessing script on raw captions, tokenizing and saving to new files
 	echo "Tokenizing dataset"
-	cd $VT/scripts
 	if [[ $PRETRAIN = true ]]; then
-		python3 vatex_preprocess.py -f $FULL -t $T -p
-		#10,000 merge operations are used (can be hyperparamaterized)
-		#learning and applying bpe are broken up so they can be parallelized
-		cd $SWNMT
-		echo "Learning BPE:"
-		for TYPE in "train" "val" "test"; do
-			for LANG in "en" "zh"; do 
-				INPUT="${TOK}/${TYPE}_tok.${LANG}"
-				OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
-				CODES="${TOK}/codes_${LANG}.bpe"
-				VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
-
-				echo "--${TYPE}-${LANG}"
-				python3 $SWNMT/subword_nmt/learn_joint_bpe_and_vocab.py -s $MERGES -o $CODES --input $INPUT --write-vocabulary $VOCAB
-			done
-		done
-
-		#once all BPE has been learned, it is applied
-		echo "Applying BPE:"
-		for TYPE in "train" "val" "test"; do
-			for LANG in "en" "zh"; do 
-				INPUT="${TOK}/${TYPE}_tok.${LANG}"
-				OUTPUT="${BPE}/${TYPE}.bpe${MERGES}.${LANG}"
-				CODES="${TOK}/codes_${LANG}.bpe"
-				VOCAB="${VOC}/${TYPE}_vocab.${LANG}"
-
-				echo "--${TYPE}-${LANG}"
-				python3 $SWNMT/subword_nmt/apply_bpe.py -c $CODES --vocabulary $VOCAB < $INPUT > $OUTPUT
-			done
-		done
+		#if a pretrained model is being used, preprocess and learn BPE
+		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T -p
+		bash $FV/learn_bpe.sh -p
 	else 
-		#if a new model is being created, preprocess data for downloading
-		python3 vatex_preprocess.py -f $FULL -t $T
+		#if a new model is being created, preprocess data for downloading WITHOUT learning BPE
+		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T
 	fi
 }
 
@@ -69,7 +40,6 @@ if [ -z $1 ]; then
 	MERGES=10000
 	T=1000
 else 
-	
 	while test $# -gt 0; do
 		case "$1" in 
 			-h) #help and ussage message
@@ -82,7 +52,6 @@ else
 				else 
 					echo "Error in arg -m:"
 					show_help
-					exit 0
 				fi
 				shift
 				;;
@@ -93,7 +62,6 @@ else
 				else
 					echo "Error in arg -t:"
 					show_help
-					exit 0
 				fi
 				shift
 				;;
@@ -108,7 +76,6 @@ else
 			*) #other args should be ignored  
 				echo "Error: unexpected arg ${1}"
 				show_help 
-				exit 0
 				;;
 		esac 
 	done
