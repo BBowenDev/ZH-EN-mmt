@@ -78,6 +78,8 @@ function prep_all {
 function prep_pretrain {
 	prep_all
 	
+	apt-get install unzip
+	
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
@@ -91,6 +93,14 @@ function prep_pretrain {
 	wget -P $FEATS "https://vatex-feats.s3.amazonaws.com/trainval.zip" &
 	wget -P $FEATS "https://vatex-feats.s3.amazonaws.com/public_test.zip" &
 	wait
+	
+	mkdir $FEATS/test.feats
+	mkdir $FEATS/train.feats
+	
+	unzip $FEATS/"public_test.zip" -d $FEATS/test.feats
+	rm $FEATS/public_test.zip
+	unzip $FEATS/"trainval.zip" -d $FEATS/train.feats
+	rm $FEATS/trainval.zip
 }
 
 #for a new model, download raw data and install relevant libraries
