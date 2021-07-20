@@ -203,7 +203,7 @@ else
 				else
 					echo "Error in arg -s: <train/val/test> set to fetch all videos from"
 				fi
-				
+				;;
 			-t) #select the first n available videos from the test set
 				shift
 				if test $# -gt 0; then 
