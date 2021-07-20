@@ -40,6 +40,7 @@ function download_vid {
 		#access and download whole video with youtube-dl
 		#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
 		#youtube-dl -q shows no output
+		#youtube-dl -4 forces ipv4 to prevent freezing
 		
 		echo "before YT"
 		#if the download doesn't complete or an error is returned, skip and increment error count
