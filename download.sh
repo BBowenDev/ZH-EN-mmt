@@ -42,12 +42,18 @@ function download_vid {
 		#youtube-dl -q shows no output
 		
 		#if the download doesn't complete or an error is returned, skip and increment error count
-		if (youtube-dl -q -i -f mp4/bestvideo --external-downloader ffmpeg --external-downloader-args "-nostdin -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME" -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
+		if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i "$(youtube-dl -q -i -f mp4/bestvideo -o $NAME "https://www.youtube.com/watch?v=${ID}")" -c:v copy -c:a copy -y $SVNAME); then
+			return 0
+		else
+			return 1
+		fi
+		
+		#if (youtube-dl -q -i -f mp4/bestvideo  -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
 			#if the encoding doesn't complete or an error is returned, skip and increment error count
-			return 0
+			#return 0
 			
 			#if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then
 				#remove unencoded file
@@ -58,9 +64,9 @@ function download_vid {
 				#rm $NAME
 				#return 1
 			#fi
-		else
-			return 1
-		fi
+		#else
+			#return 1
+		#fi
 	fi
 }
 
