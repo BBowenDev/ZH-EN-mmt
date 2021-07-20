@@ -157,7 +157,7 @@ function download_set {
 }
 
 function download_random {
-	echo "Downloading random available video"
+	echo "Downloading random available video from ${1}.ids"
 	I_FILE="${1}.ids"
 	FILE="${I_FILE}.rand"
 	
