@@ -20,10 +20,11 @@ for item in os.listdir(raw_path):
 
 print("Collecting Captions:")
 for vdir in dirs.keys():
-    print("--", vdir)
-    v_path = os.path.join(raw_path, str(vdir+".ids.vids"))
-    for video in os.listdir(v_path):
-        dirs[vdir].append(video)
+    if not vdir == "":
+        print("--", vdir)
+        v_path = os.path.join(raw_path, str(vdir+".ids.vids"))
+        for video in os.listdir(v_path):
+            dirs[vdir].append(video)
 
 formatted = {}
 for file in out_files:
