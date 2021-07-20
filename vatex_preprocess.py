@@ -6,8 +6,8 @@ import datetime
 from nltk.tokenize import word_tokenize
 import os
 
-raw_path = str(os.path.abspath("..vatex/raw/") + "/")
-tok_path = str(os.path.abspath("..vatex/tok/") + "/")
+raw_path = str(os.path.abspath("./vatex/raw/") + "/")
+tok_path = str(os.path.abspath("./vatex/tok/") + "/")
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
 out_files = ["train", "val", "test"]
