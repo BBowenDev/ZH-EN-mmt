@@ -47,12 +47,12 @@ function download_vid {
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
-			"before ffmpeg"
+			echo "before ffmpeg"
 			#if the encoding doesn't complete or an error is returned, skip and increment error count
 			if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then
 				#remove unencoded file
 				rm $NAME
-				"before return"
+				echo "before return"
 				return 0
 			else
 				#remove unencoded file
