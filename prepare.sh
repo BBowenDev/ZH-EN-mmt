@@ -97,10 +97,12 @@ function prep_pretrain {
 	mkdir $FEATS/test.feats
 	mkdir $FEATS/train.feats
 	
-	unzip $FEATS/"public_test.zip" -d $FEATS/test.feats -q
+	unzip $FEATS/"public_test.zip" -d $FEATS -q
 	rm $FEATS/public_test.zip
-	unzip $FEATS/"trainval.zip" -d $FEATS/train.feats -q
+	mv $FEATS/public_test $FEATS/test.feats
+	unzip $FEATS/"trainval.zip" -d $FEATS -q
 	rm $FEATS/trainval.zip
+	mv $FEATS/val $FEATS/train.feats
 }
 
 #for a new model, download raw data and install relevant libraries
