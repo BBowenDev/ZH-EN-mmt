@@ -19,11 +19,11 @@ function show_help {
 
 function python_tokenize {
 	if [[ $PRETRAIN = false ]]; then
-	#remove vids directory
-	rm -R $RAW/vids
+		#remove vids directory
+		rm -R $RAW/vids
 
-	#tokenize data
-	python3 $VT/scripts/vatex_tokenize.py
+		#tokenize data
+		python3 $VT/scripts/vatex_tokenize.py
 	fi
 }
 
@@ -60,9 +60,7 @@ function learn {
 }
 
 #check positional arguments
-if [ -z $1 ]; then
-	python_tokenize
-else 
+if [ ! -z $1 ]; then 
 	while test $# -gt 0; do
 		case "$1" in 
 			-h) #help and ussage message
@@ -89,6 +87,9 @@ else
 		esac
 	done
 fi
+
+#tokenize as needed
+python_tokenize
 
 #learn BPE
 learn
