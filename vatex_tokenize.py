@@ -3,8 +3,8 @@ import jieba
 from nltk.tokenize import word_tokenize
 import os
 
-raw_path = str(os.path.abspath("../raw/") + "/")
-tok_path = str(os.path.abspath("../tok/") + "/")
+raw_path = str(os.path.abspath("./vatex/raw/") + "/")
+tok_path = str(os.path.abspath("./vatex/tok/") + "/")
 
 out_files = ["train", "val", "test"]
 langs = ["en", "zh"]
