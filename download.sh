@@ -44,7 +44,7 @@ function download_vid {
 		
 		echo "before YT"
 		#if the download doesn't complete or an error is returned, skip and increment error count
-		if (youtube-dl -4 -q -i -f mp4/bestvideo --external-downloader ffmpeg -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
+		if (youtube-dl -i -f mp4/bestvideo --external-downloader ffmpeg -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
