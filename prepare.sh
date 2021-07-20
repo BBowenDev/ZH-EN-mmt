@@ -97,9 +97,9 @@ function prep_pretrain {
 	mkdir $FEATS/test.feats
 	mkdir $FEATS/train.feats
 	
-	unzip $FEATS/"public_test.zip" -d $FEATS/test.feats
+	unzip $FEATS/"public_test.zip" -d $FEATS/test.feats -q
 	rm $FEATS/public_test.zip
-	unzip $FEATS/"trainval.zip" -d $FEATS/train.feats
+	unzip $FEATS/"trainval.zip" -d $FEATS/train.feats -q
 	rm $FEATS/trainval.zip
 }
 
