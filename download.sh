@@ -42,7 +42,7 @@ function download_vid {
 		#youtube-dl -q shows no output
 		
 		echo "before youtube-dl"
-		if (youtube-dl -q -i -f mp4/bestvideo --external-downloader ffmpeg --external-downloader-args "-c:v copy -c:a copy -y" -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
+		if (youtube-dl -q -i -f mp4/bestvideo --external-downloader ffmpeg --external-downloader-args "-vcodec libx264 -c:v copy -c:a copy -y" -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
