@@ -15,9 +15,9 @@ formatted = {
     }
 '''
 
-raw_path = str(os.path.abspath("../raw/") + "/")
+raw_path = str(os.path.abspath("..vatex/raw/") + "/")
 
-tok_path = str(os.path.abspath("../tok/") + "/")
+tok_path = str(os.path.abspath("..vatex/tok/") + "/")
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
 out_files = ["train", "val", "test"]
