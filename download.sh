@@ -81,7 +81,7 @@ function download_all {
 		#target output folder to storage
 		OUTDIR=$RAW/"${FILE}.vids"
 		
-		while read -r -u "$fd" L; do
+		while read -r L; do
 			if download_vid $FILE $OUTDIR $L; then 
 				((SEEN+=1))
 				echo "Downloaded Video ${SEEN} at ${OUTDIR}"
@@ -89,7 +89,7 @@ function download_all {
 				((ERR+=1))
 			fi
 				
-		done {fd}<$F_FILE
+		done < $F_FILE
 		echo "--Videos Downloaded in ${FILE}: ${SEEN}"
 		echo "--Videos Skipped in ${FILE}: ${ERR}"
 		((SEEN_ALL+=SEEN))
