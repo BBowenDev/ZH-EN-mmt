@@ -82,7 +82,7 @@ function download_all {
 		OUTDIR=$RAW/"${FILE}.vids"
 		
 		while read -r L; do
-			if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
+			if download_vid $FILE $OUTDIR $L; then 
 				((SEEN+=1))
 				echo "Downloaded Video ${SEEN} at ${OUTDIR}"
 			else 
@@ -122,7 +122,7 @@ function download_select {
 			break
 		fi 
 
-		if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
+		if download_vid $FILE $OUTDIR $L; then 
 			((SEEN+=1))
 			echo "${SEEN}/${MAX}: Downloaded Video ${SVNAME}"
 		else 
@@ -149,7 +149,7 @@ function download_set {
 	OUTDIR=$RAW/"${FILE}.vids"
 
 	while read -r L; do
-		if [[ download_vid "$FILE" "$OUTDIR" "$L" ]]; then 
+		if download_vid $FILE $OUTDIR $L; then 
 			((SEEN+=1))
 			echo "Downloaded Random Video at ${OUTDIR}"
 		fi
@@ -176,7 +176,7 @@ function download_random {
 		RAND=$(shuf -i 0-$END -n 1)
 		LN=$(sed "${RAND}q;d" "${RAW}/${I_FILE}")
 		
-		if [[ download_vid "$FILE" "$OUTDIR" "$LN" ]]; then 
+		if download_vid $FILE $OUTDIR $LN; then 
 			((SEEN+=1))
 			echo "Downloaded Video at ${OUTDIR}"
 		fi
