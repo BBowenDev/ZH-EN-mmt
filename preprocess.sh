@@ -3,8 +3,8 @@ FV=$(pwd)
 
 PRETRAIN=false
 FULL=false
-MERGES=0
-T=0
+MERGES=10000
+T=1000
 
 function show_help {
 	echo "Usage: preprocess.sh -arg val -arg val"
@@ -27,7 +27,7 @@ function proc {
 	if [[ $PRETRAIN = true ]]; then
 		#if a pretrained model is being used, preprocess and learn BPE
 		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T -p
-		bash $FV/learn_bpe.sh -p
+		bash $FV/learn_bpe.sh -p -m $MERGES
 	else 
 		#if a new model is being created, preprocess data for downloading WITHOUT learning BPE
 		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T
@@ -37,8 +37,6 @@ function proc {
 #check positional arguments
 if [ -z $1 ]; then
 	echo "Using Default Values M=10000 | T=1000"
-	MERGES=10000
-	T=1000
 else 
 	while test $# -gt 0; do
 		case "$1" in 
