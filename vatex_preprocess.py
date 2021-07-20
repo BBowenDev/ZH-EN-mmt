@@ -6,17 +6,7 @@ import datetime
 from nltk.tokenize import word_tokenize
 import os
 
-'''
-#data structure
-formatted = {
-    "ID1": {"en": ["cap1", "cap2"...],
-           "zh": ["cap1", "cap2"...], }
-    "ID2": {}...
-    }
-'''
-
 raw_path = str(os.path.abspath("..vatex/raw/") + "/")
-
 tok_path = str(os.path.abspath("..vatex/tok/") + "/")
 
 jsons = ["vatex_training_v1.0", "vatex_validation_v1.0"]
