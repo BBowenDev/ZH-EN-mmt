@@ -8,10 +8,12 @@ BPE=$VT/bpe
 VOC=$VT/vocab
 
 PRETRAIN=false
+MERGES=10000
 
 function show_help {
 	echo "--Use no arguments for a new model"
 	echo "--Use -p for pretrained models"
+	echo "--Use -m <int> to specify the number of merges used in BPE encoding (default 10000)"
 	exit 0
 }
 
@@ -61,18 +63,30 @@ function learn {
 if [ -z $1 ]; then
 	python_tokenize
 else 
-	case "$1" in
-		-h) #help and usage message
-			show_help
-			;;
-		-p) #use pretrained model
-			PRETRAIN=true
-			;;
-		*) #other args should be ignored
-			echo "Error: unexpected arg ${1}"
-			show_help
-			;;
-	esac
+	while test $# -gt 0; do
+		case "$1" in 
+			-h) #help and ussage message
+				show_help
+				;;
+			-m) #number of merges for BPE
+				shift
+				if test $# -gt 0; then
+					MERGES=${1}
+				else 
+					echo "Error in arg -m:"
+					show_help
+				fi
+				shift
+				;;
+			-p) #boolean if pretrained model is used
+				shift
+				PRETRAIN=true
+				;;
+			*) #other args should be ignored  
+				echo "Error: unexpected arg ${1}"
+				show_help 
+				;;
+		esac
 fi
 
 #learn BPE
