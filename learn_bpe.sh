@@ -87,6 +87,7 @@ else
 				show_help 
 				;;
 		esac
+	done
 fi
 
 #learn BPE
