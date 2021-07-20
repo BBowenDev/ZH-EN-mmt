@@ -217,16 +217,16 @@ else
 			-r) #get random video from selected set
 				shift
 				if [[ $# -gt 0 ]]; then
-					if [[ $1 == *"train"* ]] || [[ $1 == *"val"* ]] || [[$1 == *"test"* ]]; then 
+					if [[ $1 == *"train"* ]] || [[ $1 == *"val"* ]] || [[ $1 == *"test"* ]]; then 
 						download_random $1
 						shift
 					else
-						echo "Error in arg -r: <train/val/test> set to fetch random video from"
+						echo "Error in arg -r: <train/val/test> set to fetch random video from ${1}"
 						exit 0
 					fi
 				
 				else 
-					echo "Error in arg -r: <train/val/test> set to fetch random video from"
+					echo "Error in arg -r: <train/val/test> set to fetch random video from ${1}"
 					exit 0
 				fi
 				;;
