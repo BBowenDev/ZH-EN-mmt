@@ -29,7 +29,6 @@ function prep_dirs {
 		mkdir $FV/vatex/feats
 	fi
 	mv *.py $FV/vatex/scripts
-	
 }
 
 function prep_all {
