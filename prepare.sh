@@ -28,7 +28,8 @@ function prep_dirs {
 		mkdir $FV/vatex/vocab
 		mkdir $FV/vatex/feats
 	fi
-	mv vatex_preprocess.py $FV/vatex/scripts
+	mv *.py $FV/vatex/scripts
+	
 }
 
 function prep_all {
