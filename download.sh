@@ -41,16 +41,18 @@ function download_vid {
 		#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
 		#youtube-dl -q shows no output
 		
+		echo "before YT"
 		#if the download doesn't complete or an error is returned, skip and increment error count
 		if (youtube-dl -q -i -f mp4/bestvideo --external-downloader ffmpeg -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
-
+			"before ffmpeg"
 			#if the encoding doesn't complete or an error is returned, skip and increment error count
 			if (ffmpeg -nostdin -loglevel 8 -ss $IN -t $DR -i $NAME -c:v copy -c:a copy -y $SVNAME); then
 				#remove unencoded file
 				rm $NAME
+				"before return"
 				return 0
 			else
 				#remove unencoded file
