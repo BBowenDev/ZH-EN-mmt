@@ -83,7 +83,7 @@ function prep_pretrain {
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
 	#dynamicconv.glu.wmt17.zh-en
 	wget -P $RAW "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
-	tar -xf $RAW/wmt17.zh-en.dynamicconv-glu.tar.gz
+	tar -xf $RAW/wmt17.zh-en.dynamicconv-glu.tar.gz $VATEX
 	
 	WMT=$VATEX/wmt17.zh-en.dynamicconv-glu
 	mv $WMT/dict.* $VATEX/vocab
