@@ -60,6 +60,7 @@ function prep_all {
 
 		cd $FV/external/fairseq
 		git submodule update --init --recursive
+		python3 -c import fairseq
 
 		#cd $FV/external/apex
 		#python setup.py install --cuda_ext --cpp_ext
