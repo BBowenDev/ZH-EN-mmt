@@ -26,7 +26,7 @@ function proc {
 	echo "Tokenizing dataset"
 	if [[ $PRETRAIN = true ]]; then
 		#if a pretrained model is being used, preprocess and learn BPE
-		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T -p
+		python3 $VT/scripts/vatex_preprocess.py -f $FULL -t $T -p true
 		bash $FV/learn_bpe.sh -p -m $MERGES
 	else 
 		#if a new model is being created, preprocess data for downloading WITHOUT learning BPE
