@@ -41,7 +41,7 @@ function download_vid {
 		#youtube-dl -f mp4/bestvideo captures video and audio in the best accessible format
 		#youtube-dl -q shows no output
 		
-		if (youtube-dl -q -i -f mp4/bestvideo --external-downloader ffmpeg -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
+		if (youtube-dl -q -i -f mp4/bestvideo --retries 10 --fragment-retries 10 --external-downloader ffmpeg -o $NAME "https://www.youtube.com/watch?v=${ID}"); then
 			#trim and encode video clip
 			#ffmpeg -nostdin prevents reading from STDIN, which causes errors with $ bash read
 			#ffmpeg -loglevel 8 only shows errors that break the download process
