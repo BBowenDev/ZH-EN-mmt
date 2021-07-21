@@ -90,7 +90,6 @@ function prep_pretrain {
 	mv $WMT/*.code $VATEX/bpe
 	mv $WMT/bpecodes $VATEX/bpe
 	mv $WMT/model.pt $FV/models
-	rm -R $WMT
 
 	echo "Fetching Pretrained Features"
 	wget -P $FEATS "https://vatex-feats.s3.amazonaws.com/trainval.zip" &
