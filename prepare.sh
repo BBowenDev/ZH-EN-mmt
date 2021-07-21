@@ -84,6 +84,8 @@ function prep_pretrain {
 	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
 	wget -P $RAW "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
+	tar -xf $RAW/wmt17.zh-en.dynamicconv-glu.tar.gz
+
 	mv dict.* $VATEX/vocab
 	mv *.code $VATEX/bpe
 	mv bpecodes $VATEX/bpe
