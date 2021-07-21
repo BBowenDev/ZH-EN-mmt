@@ -85,7 +85,7 @@ function prep_pretrain {
 	wget -P $RAW "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
 	tar -xf $RAW/wmt17.zh-en.dynamicconv-glu.tar.gz
 	
-	WMT= $VATEX/wmt17.zh-en.dynamicconv-glu
+	WMT=$VATEX/wmt17.zh-en.dynamicconv-glu
 	mv $WMT/dict.* $VATEX/vocab
 	mv $WMT/*.code $VATEX/bpe
 	mv $WMT/bpecodes $VATEX/bpe
@@ -97,9 +97,6 @@ function prep_pretrain {
 	wait
 	
 	echo "Extracting Pretrained Features"
-	mkdir $FEATS/test.feats
-	mkdir $FEATS/train.feats
-
 	unzip -q $FEATS/"public_test.zip" -d $FEATS
 	rm $FEATS/public_test.zip
 	mv $FEATS/public_test $FEATS/test.feats
