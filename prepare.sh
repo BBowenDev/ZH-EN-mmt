@@ -81,24 +81,26 @@ function prep_pretrain {
 	apt-get install unzip
 	
 	echo "Installing Pretrained Model dynamicconv.glu.wmt17.zh-en"
-	cd $FV
 	#dynamicconv.glu.wmt17.zh-en
 	wget -P $RAW "https://dl.fbaipublicfiles.com/fairseq/models/dynamicconv/wmt17.zh-en.dynamicconv-glu.tar.gz"
 	tar -xf $RAW/wmt17.zh-en.dynamicconv-glu.tar.gz
-
-	mv dict.* $VATEX/vocab
-	mv *.code $VATEX/bpe
-	mv bpecodes $VATEX/bpe
-	mv model.pt $FV/models
+	
+	WMT= $VATEX/$VATEX/wmt17.zh-en.dynamicconv-glu
+	mv $WMT/dict.* $VATEX/vocab
+	mv $WMT/*.code $VATEX/bpe
+	mv $WMT/bpecodes $VATEX/bpe
+	mv $WMT/model.pt $FV/models
+	rm -R $WMT
 
 	echo "Fetching Pretrained Features"
 	wget -P $FEATS "https://vatex-feats.s3.amazonaws.com/trainval.zip" &
 	wget -P $FEATS "https://vatex-feats.s3.amazonaws.com/public_test.zip" &
 	wait
 	
+	echo "Extracting Pretrained Features"
 	mkdir $FEATS/test.feats
 	mkdir $FEATS/train.feats
-	
+
 	unzip -q $FEATS/"public_test.zip" -d $FEATS
 	rm $FEATS/public_test.zip
 	mv $FEATS/public_test $FEATS/test.feats
