@@ -27,22 +27,8 @@ The `prepare.sh` script installs necessary packages and downloads necessary file
 * `-p` | to download pre-extracted visual features and BPE codes 
 * `-n` | to download the raw VaTeX dataset to create a new model and BPE codes
 
-## Using a Pretrained Model
-By default, this model functions on pretrained VaTeX video features and preprocessed caption data. Using the `-p` flag in the [`prepare.sh`](prepare.sh) script will format the model to utilize pretrained features and preprocessed dictionaries. Depending on shell permissions, the script may need to be elevated with `chmod 755`.
-
-
-### Quick Build
-
-```
-cd ZH-EN-mmt
-git clone https://github.com/BraedenLB/ZH-EN-mmt.git
-prepare.sh -p
-preprocess.sh -m 10000 -t 1000
-
-```
-
-
-### In-Depth Build
+## Using a Pre-Built Model
+This model includes functionality to train on pre-extracted VaTeX visual features and BPE codes. Using the `-p` flag in the [`prepare.sh`](prepare.sh) script will format the model to utilize pretrained features and preprocessed dictionaries. Depending on shell permissions, the script may need to be elevated with `chmod 755`.
 
 ```
 cd ZH-EN-mmt
@@ -50,10 +36,41 @@ cd ZH-EN-mmt
 bash prepare.sh -p
 ```
 
+
+
+### Quick Build
+The "quick build" option foregoes explanation and customizability in favor of fast results. Use the code blocks below to quicky train on pre-extracted features.
+
+```
+cd ZH-EN-mmt
+git clone https://github.com/BraedenLB/ZH-EN-mmt.git
+prepare.sh -p
+preprocess.sh -m 30000 -t 1000
+
+```
+Once preprocessing has completed, use `fairseq` to train using the downloaded features and BPE codes.
+```
+FAIRSEQ COMMANDS HERE ~~~~~~~~
+FAIRSEQ COMMANDS HERE ~~~~~~~~
+FAIRSEQ COMMANDS HERE ~~~~~~~~
+```
+
+
+### In-Depth Build
+
+```
+cd ZH-EN-mmt
+#chmod 755 preprocess.sh
+preprocess.sh -m 30000 -t 1000
+```
+
+
+
 ## Training a New Model
-**_NOTE_**: new model training does not currently work, but will be patched in forthcoming builds.
+**_NOTE: new model training does not currently work, but will be patched in forthcoming builds._**
 
 ### Quick Train
+The "quick train" option foregoes explaination and customizability in favor of fast results. Use the code blocks below to quikcly download, extract features, and train.
 
 ```
 cd ZH-EN-mmt
