@@ -66,8 +66,9 @@ The "quick train" option foregoes explaination and customizability in favor of f
 git clone https://github.com/BraedenLB/ZH-EN-mmt.git
 cd ZH-EN-mmt
 bash prepare.sh -n
-bash preprocess.sh -m 10000 -t 1000
+bash preprocess.sh -m 10000 -t 1000 --for-download
 bash download.sh -a
+bash preprocess.sh --from-dirs
 ```
 ```
 EXTRACT.SH HERE ~~~~~~~~
